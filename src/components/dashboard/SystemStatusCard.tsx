@@ -20,10 +20,10 @@ export function SystemStatusCard({ status }: SystemStatusCardProps) {
   return (
     <div
       className={cn(
-        'flex items-center gap-3 rounded-lg border px-4 py-2',
+        'flex items-center gap-3 rounded-xl border px-4 py-2',
         isConnected
-          ? 'border-green-500/30 bg-green-500/5'
-          : 'border-red-500/30 bg-red-500/5'
+          ? 'border-green-500/20 bg-green-500/[0.03]'
+          : 'border-red-500/20 bg-red-500/[0.03]'
       )}
     >
       <Database className="h-4 w-4 text-muted-foreground" />

@@ -59,21 +59,21 @@ function WidgetCard({
 }) {
   return (
     <div className={cn(
-      "h-full w-full rounded-3xl border border-border bg-card shadow-lg overflow-hidden flex flex-col transition-all hover:shadow-xl",
-      editable && "ring-2 ring-primary/20"
+      "h-full w-full rounded-3xl border border-white/[0.06] bg-card shadow-sm overflow-hidden flex flex-col transition-all duration-300 hover:shadow-lg hover:shadow-primary/[0.05]",
+      editable && "border-dashed border-primary/40"
     )}>
       {/* Header */}
-      <div className="flex items-center justify-between px-4 py-3 border-b border-border bg-muted/30">
+      <div className="flex items-center justify-between px-5 pt-5 pb-1">
         <div className="flex items-center gap-2 min-w-0">
-          <span className="text-primary shrink-0">{icon}</span>
-          <h3 className="font-semibold text-sm truncate">{title}</h3>
+          <span className="flex items-center justify-center h-7 w-7 rounded-lg bg-white/[0.06] text-primary shrink-0">{icon}</span>
+          <h3 className="font-semibold text-base truncate">{title}</h3>
         </div>
 
         {editable && (
           <div className="flex items-center gap-1 shrink-0">
             {/* Size Selector */}
             {availableSizes && availableSizes.length > 1 && onSizeChange && (
-              <div className="flex items-center gap-0.5 bg-muted rounded-lg p-0.5">
+              <div className="flex items-center gap-0.5 bg-white/[0.06] rounded-lg p-0.5">
                 {availableSizes.map((s) => (
                   <button
                     key={s}
@@ -110,7 +110,7 @@ function WidgetCard({
       </div>
 
       {/* Content */}
-      <div className="flex-1 p-4 overflow-auto min-h-0">
+      <div className="flex-1 px-5 pb-5 pt-3 overflow-auto min-h-0">
         {children}
       </div>
     </div>
@@ -198,7 +198,7 @@ export function EditModeToggle({ isEditing, onToggle }: { isEditing: boolean; on
     <button
       onClick={onToggle}
       className={cn(
-        'flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors',
+        'flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-colors',
         isEditing
           ? 'bg-primary text-primary-foreground'
           : 'bg-muted text-muted-foreground hover:text-foreground'

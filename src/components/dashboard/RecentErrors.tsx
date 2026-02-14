@@ -30,7 +30,7 @@ export function RecentErrors({ errors }: RecentErrorsProps) {
       {errors.map((error) => (
         <div
           key={error.span_id}
-          className="flex items-start justify-between rounded-lg border border-red-500/20 bg-red-500/5 p-3 transition-colors hover:bg-red-500/10"
+          className="flex items-start justify-between rounded-xl border border-red-500/15 bg-red-500/[0.03] p-3.5 transition-colors hover:bg-red-500/[0.06]"
         >
           <div className="flex-1 space-y-1">
             <div className="flex items-center gap-2">

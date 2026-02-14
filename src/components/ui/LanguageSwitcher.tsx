@@ -36,7 +36,7 @@ export function LanguageSwitcher() {
                 onClick={() => setIsOpen(!isOpen)}
                 className={cn(
                     'flex items-center gap-2 px-3 py-2 rounded-xl border transition-all',
-                    'bg-card border-border hover:border-primary/50',
+                    'bg-card border-white/[0.06] hover:border-primary/40',
                     isOpen && 'border-primary ring-1 ring-primary/20'
                 )}
                 aria-label="Select language"
@@ -51,7 +51,7 @@ export function LanguageSwitcher() {
 
             {/* Dropdown */}
             {isOpen && (
-                <div className="absolute right-0 top-full mt-2 w-40 rounded-xl border border-border bg-card p-1 shadow-xl z-50">
+                <div className="absolute right-0 top-full mt-2 w-40 rounded-xl border border-white/[0.06] bg-card p-1 shadow-xl z-50">
                     {(Object.values(LANGUAGES) as typeof LANGUAGES[LanguageCode][]).map((lang) => (
                         <button
                             key={lang.code}

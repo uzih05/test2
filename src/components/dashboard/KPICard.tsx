@@ -30,10 +30,10 @@ export function KPICard({
   className,
 }: KPICardProps) {
   const variantStyles = {
-    default: 'border-border',
-    success: 'border-green-500/30 bg-green-500/5',
-    warning: 'border-yellow-500/30 bg-yellow-500/5',
-    error: 'border-red-500/30 bg-red-500/5',
+    default: '',
+    success: 'border-green-500/20 bg-green-500/[0.03]',
+    warning: 'border-yellow-500/20 bg-yellow-500/[0.03]',
+    error: 'border-red-500/20 bg-red-500/[0.03]',
   };
 
   const getTrendIcon = () => {
@@ -53,7 +53,7 @@ export function KPICard({
   return (
     <div
       className={cn(
-        'rounded-xl border bg-card p-4 shadow-sm transition-all hover:shadow-md',
+        'rounded-2xl border border-white/[0.06] bg-card p-5 shadow-sm transition-all duration-300 hover:shadow-lg hover:shadow-primary/[0.05]',
         variantStyles[variant],
         className
       )}
@@ -67,7 +67,7 @@ export function KPICard({
           )}
         </div>
         {icon && (
-          <div className="rounded-lg bg-muted p-2 text-muted-foreground">
+          <div className="rounded-xl bg-white/[0.06] p-2.5 text-muted-foreground">
             {icon}
           </div>
         )}

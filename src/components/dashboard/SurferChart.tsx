@@ -243,7 +243,7 @@ export function SurferChart({
                     {showGrid && (
                         <CartesianGrid
                             strokeDasharray="3 3"
-                            stroke="#3a3a3a"
+                            stroke="#2a2a2e"
                             opacity={0.5}
                             vertical={false}
                         />
@@ -254,16 +254,16 @@ export function SurferChart({
                         <XAxis
                             dataKey="name"
                             tick={{ fill: '#888', fontSize: 12 }}
-                            axisLine={{ stroke: '#3a3a3a' }}
-                            tickLine={{ stroke: '#3a3a3a' }}
+                            axisLine={{ stroke: '#2a2a2e' }}
+                            tickLine={{ stroke: '#2a2a2e' }}
                         />
                     )}
 
                     {showYAxis && (
                         <YAxis
                             tick={{ fill: '#888', fontSize: 12 }}
-                            axisLine={{ stroke: '#3a3a3a' }}
-                            tickLine={{ stroke: '#3a3a3a' }}
+                            axisLine={{ stroke: '#2a2a2e' }}
+                            tickLine={{ stroke: '#2a2a2e' }}
                             width={40}
                         />
                     )}
@@ -272,8 +272,8 @@ export function SurferChart({
                     {showTooltip && (
                         <Tooltip
                             contentStyle={{
-                                backgroundColor: '#2e2e2e',
-                                border: '1px solid #3a3a3a',
+                                backgroundColor: '#1a1a1e',
+                                border: '1px solid rgba(255, 255, 255, 0.06)',
                                 borderRadius: '12px',
                                 boxShadow: '0 4px 20px rgba(0, 0, 0, 0.4)',
                             }}
@@ -302,7 +302,7 @@ export function SurferChart({
                         activeDot={{
                             r: 6,
                             fill: strokeColor,
-                            stroke: '#1e1e1e',
+                            stroke: '#171719',
                             strokeWidth: 2,
                         }}
                     />
@@ -326,7 +326,7 @@ export function FillModeSelector({ value, onChange }: FillModeSelectorProps) {
     ];
 
     return (
-        <div className="flex items-center gap-1 rounded-xl bg-[#2e2e2e] p-1">
+        <div className="flex items-center gap-1 rounded-xl bg-white/[0.06] p-1">
             {modes.map(({ mode, label }) => (
                 <button
                     key={mode}
