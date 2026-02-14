@@ -166,7 +166,7 @@ export default function ProjectsPage() {
       <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] rounded-full bg-primary/8 blur-[120px] pointer-events-none" />
 
       {/* Header */}
-      <header className="relative z-10 flex items-center justify-between border-b border-white/[0.04] px-8 py-4 bg-background/60 backdrop-blur-xl">
+      <header className="relative z-10 flex items-center justify-between border-b border-border/50 px-8 py-4 bg-background/60 backdrop-blur-xl">
         <div className="flex items-center gap-3">
           <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-primary/15">
             <Waves className="h-5 w-5 text-primary" />
@@ -177,7 +177,7 @@ export default function ProjectsPage() {
           <span className="text-sm text-muted-foreground">{user?.email}</span>
           <button
             onClick={handleLogout}
-            className="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm text-muted-foreground hover:bg-white/[0.06] hover:text-foreground transition-colors"
+            className="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
           >
             <LogOut className="h-3.5 w-3.5" />
             {t('projects.logout')}
@@ -220,7 +220,7 @@ export default function ProjectsPage() {
                   role="button"
                   tabIndex={0}
                   className={cn(
-                    'w-full flex items-center justify-between rounded-3xl border p-6 text-left transition-all cursor-pointer hover:border-primary/50 hover:shadow-lg hover:shadow-primary/[0.08] hover-glow',
+                    'w-full flex items-center justify-between rounded-2xl border p-6 text-left transition-all cursor-pointer hover:border-primary/50 hover:shadow-lg hover:shadow-primary/[0.08] hover-glow',
                     conn.is_active
                       ? 'border-green-500/30 bg-green-500/5'
                       : 'border-border bg-card'
@@ -293,7 +293,7 @@ export default function ProjectsPage() {
               <div className="flex gap-3">
                 <button
                   onClick={() => { setShowForm(true); resetForm(); }}
-                  className="flex-1 flex items-center justify-center gap-2 rounded-3xl border border-dashed border-white/[0.06] p-4 text-sm text-muted-foreground hover:border-primary hover:text-primary transition-colors"
+                  className="flex-1 flex items-center justify-center gap-2 rounded-2xl border border-dashed border-border p-4 text-sm text-muted-foreground hover:border-primary hover:text-primary transition-colors"
                 >
                   <Plus className="h-4 w-4" />
                   {t('projects.addNew')}
@@ -301,10 +301,10 @@ export default function ProjectsPage() {
                 <button
                   onClick={() => setShowQuickStart(!showQuickStart)}
                   className={cn(
-                    'flex items-center gap-2 rounded-3xl border px-5 py-4 text-sm font-medium transition-colors',
+                    'flex items-center gap-2 rounded-2xl border px-5 py-4 text-sm font-medium transition-colors',
                     showQuickStart
                       ? 'border-primary bg-primary/5 text-primary'
-                      : 'border-dashed border-white/[0.06] text-muted-foreground hover:border-primary hover:text-primary'
+                      : 'border-dashed border-border text-muted-foreground hover:border-primary hover:text-primary'
                   )}
                 >
                   <Rocket className="h-4 w-4" />
@@ -313,7 +313,7 @@ export default function ProjectsPage() {
               </div>
             )
           ) : (
-            <div className="rounded-3xl border border-white/[0.06] bg-card/60 backdrop-blur-xl p-6 space-y-5">
+            <div className="rounded-2xl border border-border card-glass p-6 space-y-5">
               <h3 className="font-semibold text-lg">{t('projects.newProject')}</h3>
 
               {/* Type Tabs */}

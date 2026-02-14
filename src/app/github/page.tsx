@@ -27,7 +27,7 @@ import {
     Minus,
 } from 'lucide-react';
 import { useQuery, useQueryClient, useMutation } from '@tanstack/react-query';
-import { githubService, GitHubRepo, GitHubPR, GitHubPRDetail } from '@/lib/services/github';
+import { githubService } from '@/lib/services/github';
 import { useTranslation } from '@/lib/i18n';
 import { cn } from '@/lib/utils';
 
@@ -123,7 +123,7 @@ function TokenSection() {
     const connected = status?.connected;
 
     return (
-        <div className="rounded-3xl border border-white/[0.06] bg-card p-6">
+        <div className="rounded-2xl border border-border bg-card p-6">
             <div className="flex items-center gap-2 mb-4">
                 <Key className="h-5 w-5 text-primary" />
                 <h2 className="font-semibold">{t('github.tokenLabel')}</h2>
@@ -140,7 +140,7 @@ function TokenSection() {
                     </div>
                     <button
                         onClick={() => deleteMutation.mutate()}
-                        className="flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-lg border border-white/[0.06] hover:bg-destructive/10 hover:text-destructive transition-colors"
+                        className="flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-lg border border-border hover:bg-destructive/10 hover:text-destructive transition-colors"
                     >
                         <Trash2 className="h-3.5 w-3.5" />
                         {t('github.disconnect')}
@@ -155,7 +155,7 @@ function TokenSection() {
                             value={tokenInput}
                             onChange={(e) => setTokenInput(e.target.value)}
                             placeholder={t('github.tokenPlaceholder')}
-                            className="flex-1 px-3 py-2 rounded-lg border border-white/[0.06] bg-white/[0.03] text-sm"
+                            className="flex-1 px-3 py-2 rounded-lg border border-border bg-muted/30 text-sm"
                         />
                         <button
                             onClick={() => tokenInput && saveMutation.mutate(tokenInput)}
@@ -207,7 +207,7 @@ function RepoSelector({
         <div className="relative">
             <button
                 onClick={() => setOpen(!open)}
-                className="flex items-center justify-between w-full px-4 py-2.5 rounded-xl border border-white/[0.06] bg-card text-sm font-medium transition-colors hover:bg-white/[0.04]"
+                className="flex items-center justify-between w-full px-4 py-2.5 rounded-xl border border-border bg-card text-sm font-medium transition-colors hover:bg-muted/50"
             >
                 <span className="flex items-center gap-2 truncate">
                     {selectedRepo ? (
@@ -231,7 +231,7 @@ function RepoSelector({
             {open && (
                 <>
                     <div className="fixed inset-0 z-10" onClick={() => setOpen(false)} />
-                    <div className="absolute z-20 mt-1 w-full max-h-64 overflow-y-auto rounded-2xl border border-white/[0.06] bg-card shadow-xl">
+                    <div className="absolute z-20 mt-1 w-full max-h-64 overflow-y-auto rounded-2xl border border-border bg-card shadow-xl">
                         {repos.length === 0 ? (
                             <div className="p-4 text-sm text-muted-foreground text-center">
                                 {t('github.noRepos')}
@@ -245,7 +245,7 @@ function RepoSelector({
                                         setOpen(false);
                                     }}
                                     className={cn(
-                                        'w-full flex items-center gap-3 px-4 py-2.5 text-sm text-left transition-colors hover:bg-white/[0.04]',
+                                        'w-full flex items-center gap-3 px-4 py-2.5 text-sm text-left transition-colors hover:bg-muted/50',
                                         selectedRepo === repo.full_name && 'bg-primary/5 text-primary'
                                     )}
                                 >
@@ -317,7 +317,7 @@ function PRDetailPanel({ owner, repo, number }: { owner: string; repo: string; n
 
             {/* Full body */}
             {data.body ? (
-                <p className="text-xs text-muted-foreground whitespace-pre-wrap line-clamp-6 bg-white/[0.04] rounded-lg p-3">
+                <p className="text-xs text-muted-foreground whitespace-pre-wrap line-clamp-6 bg-muted/50 rounded-lg p-3">
                     {data.body}
                 </p>
             ) : (
@@ -361,7 +361,7 @@ function PRList({ owner, repo }: { owner: string; repo: string }) {
         <div className="space-y-4">
             {/* Filter + Refresh */}
             <div className="flex items-center justify-between">
-                <div className="flex items-center gap-1 rounded-lg bg-white/[0.04] p-1">
+                <div className="flex items-center gap-1 rounded-lg bg-muted/50 p-1">
                     {filters.map((f) => (
                         <button
                             key={f.key}
@@ -380,7 +380,7 @@ function PRList({ owner, repo }: { owner: string; repo: string }) {
 
                 <button
                     onClick={() => refetch()}
-                    className="p-2 rounded-lg hover:bg-white/[0.04] transition-colors"
+                    className="p-2 rounded-lg hover:bg-muted/50 transition-colors"
                     title={t('common.refresh')}
                 >
                     <RefreshCw className="h-4 w-4" />
@@ -401,11 +401,11 @@ function PRList({ owner, repo }: { owner: string; repo: string }) {
                     {pulls.map((pr) => (
                         <div
                             key={pr.number}
-                            className="rounded-2xl border border-white/[0.06] bg-card overflow-hidden"
+                            className="rounded-2xl border border-border bg-card overflow-hidden"
                         >
                             <button
                                 onClick={() => setExpandedPR(expandedPR === pr.number ? null : pr.number)}
-                                className="w-full flex items-start gap-3 p-4 transition-colors hover:bg-white/[0.04] text-left"
+                                className="w-full flex items-start gap-3 p-4 transition-colors hover:bg-muted/50 text-left"
                             >
                                 {/* Status Icon */}
                                 <div className="pt-0.5 shrink-0">
@@ -475,7 +475,7 @@ function PRList({ owner, repo }: { owner: string; repo: string }) {
 
                             {/* Expanded detail */}
                             {expandedPR === pr.number && (
-                                <div className="border-t border-white/[0.06]">
+                                <div className="border-t border-border">
                                     <PRDetailPanel owner={owner} repo={repo} number={pr.number} />
                                 </div>
                             )}

@@ -2,6 +2,7 @@
  * SearchBar - Command palette style search
  *
  * Ctrl+K / Cmd+K to focus. Filters navigation items and navigates on select.
+ * Supports 'header' variant for gradient header.
  */
 
 'use client';
@@ -39,7 +40,11 @@ const pages = [
   { key: 'projects', href: '/projects', icon: FolderOpen },
 ];
 
-export function SearchBar() {
+interface SearchBarProps {
+  variant?: 'default' | 'header';
+}
+
+export function SearchBar({ variant = 'default' }: SearchBarProps) {
   const router = useRouter();
   const { t } = useTranslation();
   const [query, setQuery] = useState('');
@@ -110,11 +115,16 @@ export function SearchBar() {
     }
   };
 
+  const isHeader = variant === 'header';
+
   return (
     <div ref={containerRef} className="relative w-full max-w-md">
       {/* Input */}
       <div className="relative">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+        <Search className={cn(
+          'absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4',
+          isHeader ? 'text-white/70' : 'text-muted-foreground'
+        )} />
         <input
           ref={inputRef}
           value={query}
@@ -126,13 +136,18 @@ export function SearchBar() {
           onFocus={() => setIsOpen(true)}
           onKeyDown={handleKeyDown}
           placeholder={`Search... (Ctrl+K)`}
-          className="w-full rounded-xl border border-white/[0.06] bg-white/[0.03] pl-9 pr-4 py-2 text-sm placeholder:text-muted-foreground/60 focus:border-primary/40 focus:outline-none focus:ring-1 focus:ring-primary/20 transition-all"
+          className={cn(
+            'w-full rounded-xl pl-9 pr-4 py-2 text-sm focus:outline-none transition-all',
+            isHeader
+              ? 'bg-white/10 border border-white/20 text-white placeholder:text-white/50 focus:bg-white/15 focus:border-white/30'
+              : 'border border-border bg-muted/50 placeholder:text-muted-foreground/60 focus:border-primary/40 focus:ring-1 focus:ring-primary/20'
+          )}
         />
       </div>
 
       {/* Dropdown */}
       {isOpen && (
-        <div className="absolute top-full left-0 right-0 mt-2 rounded-xl border border-white/[0.06] bg-card shadow-2xl overflow-hidden z-50">
+        <div className="absolute top-full left-0 right-0 mt-2 rounded-xl border border-border bg-card shadow-2xl overflow-hidden z-50">
           <div className="max-h-[300px] overflow-y-auto py-1">
             {filtered.map((page, index) => (
               <button
@@ -142,7 +157,7 @@ export function SearchBar() {
                   'w-full flex items-center gap-3 px-4 py-2.5 text-sm transition-colors',
                   index === selectedIndex
                     ? 'bg-primary/10 text-primary'
-                    : 'text-muted-foreground hover:bg-white/[0.04] hover:text-foreground'
+                    : 'text-muted-foreground hover:bg-muted hover:text-foreground'
                 )}
               >
                 <page.icon className="h-4 w-4" />

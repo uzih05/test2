@@ -29,7 +29,7 @@ export function TimeRangeSelector() {
         setTimeRangePreset,
         setTimeRangeCustom,
     } = useDashboardStore();
-    const { t, language } = useTranslation();
+    const { t } = useTranslation();
 
     const [isOpen, setIsOpen] = useState(false);
     const [showCustom, setShowCustom] = useState(false);
@@ -124,7 +124,7 @@ export function TimeRangeSelector() {
                 onClick={() => setIsOpen(!isOpen)}
                 className={cn(
                     'flex items-center gap-2 px-4 py-2 rounded-xl border transition-all',
-                    'bg-card border-white/[0.06] hover:border-primary/40',
+                    'bg-card border-border hover:border-primary/40',
                     isOpen && 'border-primary ring-1 ring-primary/20'
                 )}
             >
@@ -140,7 +140,7 @@ export function TimeRangeSelector() {
 
             {/* 드롭다운 */}
             {isOpen && (
-                <div className="absolute right-0 top-full mt-2 w-80 rounded-3xl border border-white/[0.06] bg-card p-4 shadow-xl z-50">
+                <div className="absolute right-0 top-full mt-2 w-80 rounded-2xl border border-border bg-card p-4 shadow-xl z-50">
                     {!showCustom ? (
                         <>
                             {/* 슬라이더 섹션 */}
@@ -204,7 +204,7 @@ export function TimeRangeSelector() {
                             </div>
 
                             {/* 구분선 */}
-                            <div className="border-t border-white/[0.04] my-3" />
+                            <div className="border-t border-border/50 my-3" />
 
                             {/* 커스텀 범위 버튼 */}
                             <button
@@ -293,7 +293,7 @@ export function FillModeSelector() {
     ];
 
     return (
-        <div className="flex items-center gap-1 rounded-xl bg-white/[0.06] p-1">
+        <div className="flex items-center gap-1 rounded-xl bg-muted p-1">
             {modes.map(({ value, labelKey }) => (
                 <button
                     key={value}

@@ -44,7 +44,8 @@ import {
 } from '@/lib/hooks/useApi';
 import { formatNumber, formatDuration, formatPercentage, cn } from '@/lib/utils';
 import { useQuery, useQueryClient, useMutation } from '@tanstack/react-query';
-import { widgetsService, Widget, WidgetCatalogItem } from '@/lib/services/widgets';
+import type { Widget, WidgetCatalogItem } from '@/lib/services/widgets';
+import { widgetsService } from '@/lib/services/widgets';
 
 // ============ Grid Size Mapping ============
 const WIDGET_GRID: Record<string, Record<string, { w: number; h: number }>> = {
@@ -340,10 +341,10 @@ function WidgetPicker({
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50" onClick={onClose}>
             <div
-                className="bg-card border border-white/[0.06] rounded-3xl shadow-2xl w-full max-w-lg mx-4 max-h-[70vh] overflow-hidden"
+                className="bg-card border border-border rounded-2xl shadow-2xl w-full max-w-lg mx-4 max-h-[70vh] overflow-hidden"
                 onClick={(e) => e.stopPropagation()}
             >
-                <div className="flex items-center justify-between px-6 py-4 border-b border-white/[0.04]">
+                <div className="flex items-center justify-between px-6 py-4 border-b border-border/50">
                     <h2 className="text-lg font-bold">{t('widgets.catalog')}</h2>
                     <button
                         onClick={onClose}
@@ -363,8 +364,8 @@ function WidgetPicker({
                                 className={cn(
                                     'w-full flex items-center gap-3 p-4 rounded-xl border transition-colors text-left',
                                     alreadyAdded
-                                        ? 'border-white/[0.06] bg-muted/50 opacity-50 cursor-not-allowed'
-                                        : 'border-white/[0.06] hover:border-primary/50 hover:bg-primary/5 cursor-pointer'
+                                        ? 'border-border bg-muted/50 opacity-50 cursor-not-allowed'
+                                        : 'border-border hover:border-primary/50 hover:bg-primary/5 cursor-pointer'
                                 )}
                             >
                                 <span className="text-primary shrink-0">
@@ -515,7 +516,7 @@ export default function DashboardPage() {
     return (
         <div className="min-h-screen bg-background">
             {/* Sub Header - dashboard controls */}
-            <div className="border-b border-white/[0.04] bg-background/60 backdrop-blur-sm">
+            <div className="border-b border-border/50 bg-background/60 backdrop-blur-sm">
                 <div className="px-4 md:px-6 py-3">
                     <div className="flex flex-wrap items-center gap-3">
                         {/* Title */}
@@ -533,7 +534,7 @@ export default function DashboardPage() {
                             {/* Add Widget */}
                             <button
                                 onClick={() => setShowPicker(true)}
-                                className="flex items-center gap-1.5 rounded-xl border border-white/[0.06] bg-card px-2.5 py-2 text-sm font-medium transition-colors hover:bg-white/[0.04] hover-glow"
+                                className="flex items-center gap-1.5 rounded-xl border border-border bg-card px-2.5 py-2 text-sm font-medium transition-colors hover:bg-muted/50 hover-glow"
                                 title={t('widgets.addWidget')}
                             >
                                 <Plus className="h-4 w-4" />
@@ -560,7 +561,7 @@ export default function DashboardPage() {
                             {/* Refresh */}
                             <button
                                 onClick={handleRefresh}
-                                className="flex items-center gap-1.5 rounded-xl border border-white/[0.06] bg-card px-2.5 py-2 text-sm font-medium transition-colors hover:bg-white/[0.04] hover-glow"
+                                className="flex items-center gap-1.5 rounded-xl border border-border bg-card px-2.5 py-2 text-sm font-medium transition-colors hover:bg-muted/50 hover-glow"
                                 title={t('common.refresh')}
                             >
                                 <RefreshCw className="h-4 w-4" />

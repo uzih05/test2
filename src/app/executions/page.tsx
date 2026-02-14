@@ -50,7 +50,7 @@ function ExecutionDetailModal({ spanId, onClose }: ExecutionDetailModalProps) {
             />
 
             {/* Modal */}
-            <div className="relative z-10 w-full max-w-2xl max-h-[80vh] overflow-auto rounded-3xl border border-border bg-card shadow-2xl mx-4">
+            <div className="relative z-10 w-full max-w-2xl max-h-[80vh] overflow-auto rounded-2xl border border-border bg-card shadow-2xl mx-4">
                 {/* Header */}
                 <div className="sticky top-0 flex items-center justify-between border-b border-border bg-card px-6 py-4">
                     <h2 className="text-lg font-semibold">{t('executions.details')}</h2>
@@ -344,9 +344,9 @@ function ExecutionsPageInner() {
             </div>
 
             {/* Table */}
-            <div className="rounded-3xl border border-white/[0.06] bg-card shadow-sm overflow-hidden overflow-x-auto">
+            <div className="rounded-2xl border border-border bg-card shadow-sm overflow-hidden overflow-x-auto">
                 <table className="w-full min-w-[600px]">
-                    <thead className="border-b border-border bg-white/[0.02]">
+                    <thead className="border-b border-border bg-muted/20">
                         <tr>
                             <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">{t('executions.function')}</th>
                             <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">Status</th>

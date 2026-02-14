@@ -53,7 +53,7 @@ export function KPICard({
   return (
     <div
       className={cn(
-        'rounded-3xl border border-white/[0.06] bg-card p-6 shadow-sm transition-all duration-300 hover:shadow-lg hover:shadow-primary/[0.08]',
+        'rounded-2xl border border-border bg-card p-6 shadow-sm transition-all duration-300 hover:shadow-lg hover:shadow-primary/[0.08]',
         variantStyles[variant],
         className
       )}
@@ -67,7 +67,7 @@ export function KPICard({
           )}
         </div>
         {icon && (
-          <div className="rounded-xl bg-primary/[0.08] p-2.5 text-muted-foreground">
+          <div className="rounded-xl bg-primary/10 p-2.5 text-muted-foreground">
             {icon}
           </div>
         )}

@@ -93,7 +93,7 @@ function DiagnosisCard({ result }: DiagnosisCardProps) {
     };
 
     return (
-        <div className={cn('rounded-3xl border p-6', statusColors[result.status])}>
+        <div className={cn('rounded-2xl border p-6', statusColors[result.status])}>
             {/* Header */}
             <div className="flex items-start justify-between mb-4">
                 <div className="flex items-center gap-3">
@@ -158,7 +158,7 @@ function BatchResultCard({ results, succeeded, failed, total }: BatchResultCardP
     const { t } = useTranslation();
 
     return (
-        <div className="rounded-3xl border border-white/[0.06] bg-card p-6">
+        <div className="rounded-2xl border border-border bg-card p-6">
             {/* Summary Header */}
             <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-3">
@@ -566,7 +566,7 @@ function LoadingOverlay({ mode, count = 1 }: LoadingOverlayProps) {
     const { t } = useTranslation();
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-sm">
-            <div className="flex flex-col items-center gap-4 rounded-3xl border border-white/[0.06] bg-card p-8 shadow-2xl">
+            <div className="flex flex-col items-center gap-4 rounded-2xl border border-border bg-card p-8 shadow-2xl">
                 <div className="relative">
                     <Loader2 className="h-12 w-12 animate-spin text-primary" />
                     <Sparkles className="absolute -right-1 -top-1 h-5 w-5 text-primary animate-pulse" />
@@ -856,7 +856,7 @@ export default function HealerPage() {
                 <div className="lg:col-span-2 space-y-6">
                     {/* Configuration */}
                     <div className={cn(
-                        'rounded-3xl border border-white/[0.06] bg-card p-6',
+                        'rounded-2xl border border-border bg-card p-6',
                         isRunning && 'opacity-50 pointer-events-none'
                     )}>
                         <h3 className="font-semibold mb-4">Diagnosis Configuration</h3>
@@ -939,7 +939,7 @@ export default function HealerPage() {
 
                     {/* Empty State */}
                     {!diagnosis && !batchResult && !isRunning && (
-                        <div className="rounded-3xl border border-dashed border-white/[0.06] bg-card p-12 text-center">
+                        <div className="rounded-2xl border border-dashed border-border bg-card p-12 text-center">
                             {mode === 'batch' ? (
                                 <>
                                     <Layers className="h-12 w-12 mx-auto mb-4 text-muted-foreground opacity-50" />

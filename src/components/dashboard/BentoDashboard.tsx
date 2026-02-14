@@ -59,13 +59,13 @@ function WidgetCard({
 }) {
   return (
     <div className={cn(
-      "h-full w-full rounded-3xl border border-white/[0.06] bg-card shadow-sm overflow-hidden flex flex-col transition-all duration-300 hover:shadow-lg hover:shadow-primary/[0.08]",
+      "h-full w-full rounded-2xl border border-border bg-card shadow-sm overflow-hidden flex flex-col transition-all duration-300 hover:shadow-lg hover:shadow-primary/[0.08]",
       editable && "border-dashed border-primary/40"
     )}>
       {/* Header */}
       <div className="flex items-center justify-between px-6 pt-6 pb-1">
         <div className="flex items-center gap-2 min-w-0">
-          <span className="flex items-center justify-center h-7 w-7 rounded-lg bg-primary/[0.08] text-primary shrink-0">{icon}</span>
+          <span className="flex items-center justify-center h-7 w-7 rounded-lg bg-primary/10 text-primary shrink-0">{icon}</span>
           <h3 className="font-semibold text-base truncate">{title}</h3>
         </div>
 
@@ -73,7 +73,7 @@ function WidgetCard({
           <div className="flex items-center gap-1 shrink-0">
             {/* Size Selector */}
             {availableSizes && availableSizes.length > 1 && onSizeChange && (
-              <div className="flex items-center gap-0.5 bg-primary/[0.08] rounded-lg p-0.5">
+              <div className="flex items-center gap-0.5 bg-primary/10 rounded-lg p-0.5">
                 {availableSizes.map((s) => (
                   <button
                     key={s}

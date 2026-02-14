@@ -21,10 +21,9 @@ import {
 import { useDashboardStore } from '@/lib/stores/useDashboardStore';
 import { useTranslation } from '@/lib/i18n';
 import { TimeRangeSelector, FillModeSelector } from '@/components/ui/TimeRangeSelector';
-import { StatusBadge } from '@/components/ui/StatusBadge';
 import { SurferChart, type FillMode } from '@/components/dashboard/SurferChart';
 import { useErrors, useErrorSummary, useErrorTrends, useErrorSearch, useErrorDistribution } from '@/lib/hooks/useApi';
-import { timeAgo, formatNumber, cn } from '@/lib/utils';
+import { timeAgo, formatNumber } from '@/lib/utils';
 
 // ============ Error Distribution Chart ============
 interface ErrorDistributionProps {
@@ -134,7 +133,7 @@ function SummaryCards({ timeRange }: SummaryCardsProps) {
         return (
             <div className="grid gap-4 md:grid-cols-4">
                 {Array.from({ length: 4 }).map((_, i) => (
-                    <div key={i} className="h-24 animate-pulse rounded-3xl bg-muted" />
+                    <div key={i} className="h-24 animate-pulse rounded-2xl bg-muted" />
                 ))}
             </div>
         );
@@ -145,7 +144,7 @@ function SummaryCards({ timeRange }: SummaryCardsProps) {
     return (
         <div className="grid gap-4 md:grid-cols-4">
             {/* Total Errors */}
-            <div className="rounded-3xl border border-red-500/30 bg-red-500/5 p-4">
+            <div className="rounded-2xl border border-red-500/30 bg-red-500/5 p-4">
                 <p className="text-sm text-muted-foreground mb-1">{t('errors.totalErrors')}</p>
                 <p className="text-3xl font-bold text-red-500">
                     {formatNumber(summary?.total_errors || 0)}
@@ -154,7 +153,7 @@ function SummaryCards({ timeRange }: SummaryCardsProps) {
 
             {/* Top Error Codes */}
             {topErrors.map((item) => (
-                <div key={item.error_code} className="rounded-3xl border border-white/[0.06] bg-card p-4">
+                <div key={item.error_code} className="rounded-2xl border border-border bg-card p-4">
                     <p className="text-sm text-muted-foreground mb-1 truncate">{item.error_code}</p>
                     <p className="text-3xl font-bold">{formatNumber(item.count)}</p>
                 </div>
@@ -162,7 +161,7 @@ function SummaryCards({ timeRange }: SummaryCardsProps) {
 
             {/* Fill empty slots */}
             {Array.from({ length: Math.max(0, 3 - topErrors.length) }).map((_, i) => (
-                <div key={`empty-${i}`} className="rounded-3xl border border-border bg-card p-4">
+                <div key={`empty-${i}`} className="rounded-2xl border border-border bg-card p-4">
                     <p className="text-sm text-muted-foreground mb-1">-</p>
                     <p className="text-3xl font-bold">0</p>
                 </div>
@@ -188,7 +187,7 @@ function ErrorCard({ error }: ErrorCardProps) {
     const { t } = useTranslation();
 
     return (
-        <div className="rounded-3xl border border-red-500/20 bg-card p-4 hover:border-red-500/40 transition-colors">
+        <div className="rounded-2xl border border-red-500/20 bg-card p-4 hover:border-red-500/40 transition-colors">
             <div className="flex items-start justify-between gap-4">
                 <div className="min-w-0 flex-1">
                     {/* Function & Error Code */}
@@ -291,7 +290,7 @@ function ErrorsPageInner() {
             {/* Charts Row */}
             <div className="grid gap-6 lg:grid-cols-3">
                 {/* Trend Chart */}
-                <div className="lg:col-span-2 rounded-3xl border border-white/[0.06] bg-card p-4">
+                <div className="lg:col-span-2 rounded-2xl border border-border bg-card p-4">
                     <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
                         <div className="flex items-center gap-2">
                             <TrendingUp className="h-4 w-4 text-muted-foreground" />
@@ -303,7 +302,7 @@ function ErrorsPageInner() {
                 </div>
 
                 {/* Distribution */}
-                <div className="rounded-3xl border border-white/[0.06] bg-card p-4">
+                <div className="rounded-2xl border border-border bg-card p-4">
                     <div className="flex items-center gap-2 mb-4">
                         <PieChart className="h-4 w-4 text-muted-foreground" />
                         <h3 className="font-semibold">{t('errors.distribution')}</h3>

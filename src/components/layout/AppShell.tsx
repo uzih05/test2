@@ -31,11 +31,9 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     <AuthGuard>
       <div className="flex h-screen overflow-hidden bg-background">
         <Sidebar />
-        <div
-          className="flex flex-1 flex-col overflow-hidden transition-[margin] duration-200"
-        >
+        <div className="flex flex-1 flex-col overflow-hidden">
           <Header />
-          <main className="flex-1 overflow-auto">{children}</main>
+          <main className="flex-1 overflow-auto page-enter">{children}</main>
         </div>
       </div>
     </AuthGuard>

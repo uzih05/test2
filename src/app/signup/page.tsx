@@ -45,7 +45,7 @@ export default function SignupPage() {
         </div>
 
         {/* Glass Card */}
-        <div className="rounded-3xl border border-white/[0.06] bg-card/60 backdrop-blur-xl p-8 space-y-6">
+        <div className="rounded-2xl border border-border card-glass backdrop-blur-xl p-8 space-y-6">
           <form onSubmit={handleSubmit} className="space-y-4">
             {error && (
               <div className="rounded-xl border border-red-500/30 bg-red-500/10 p-3 text-sm text-red-400">
@@ -62,7 +62,7 @@ export default function SignupPage() {
                 type="text"
                 value={displayName}
                 onChange={(e) => setDisplayName(e.target.value)}
-                className="w-full rounded-xl border border-white/[0.06] bg-white/[0.03] px-4 py-2.5 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary/30 transition-colors placeholder:text-muted-foreground/50"
+                className="w-full rounded-xl border border-border bg-muted/30 px-4 py-2.5 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary/30 transition-colors placeholder:text-muted-foreground/50"
                 placeholder="Your name (optional)"
               />
             </div>
@@ -74,7 +74,7 @@ export default function SignupPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="w-full rounded-xl border border-white/[0.06] bg-white/[0.03] px-4 py-2.5 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary/30 transition-colors placeholder:text-muted-foreground/50"
+                className="w-full rounded-xl border border-border bg-muted/30 px-4 py-2.5 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary/30 transition-colors placeholder:text-muted-foreground/50"
                 placeholder="you@example.com"
               />
             </div>
@@ -87,7 +87,7 @@ export default function SignupPage() {
                 onChange={(e) => setPassword(e.target.value)}
                 required
                 minLength={6}
-                className="w-full rounded-xl border border-white/[0.06] bg-white/[0.03] px-4 py-2.5 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary/30 transition-colors placeholder:text-muted-foreground/50"
+                className="w-full rounded-xl border border-border bg-muted/30 px-4 py-2.5 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary/30 transition-colors placeholder:text-muted-foreground/50"
                 placeholder="Min 6 characters"
               />
             </div>
@@ -95,7 +95,7 @@ export default function SignupPage() {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full flex items-center justify-center gap-2 rounded-full bg-primary px-4 py-2.5 text-sm font-semibold text-white hover:brightness-110 hover-glow disabled:opacity-50 transition-all"
+              className="w-full flex items-center justify-center gap-2 rounded-full gradient-accent px-4 py-2.5 text-sm font-semibold text-white hover:brightness-110 hover-glow disabled:opacity-50 transition-all"
             >
               <UserPlus className="h-4 w-4" />
               {isLoading ? 'Creating account...' : 'Create Account'}

@@ -1,69 +1,71 @@
 @import "tailwindcss";
 @import 'react-grid-layout/css/styles.css';
 
-/* v4에서는 @tailwind base, components, utilities 대신
-  위의 @import "tailwindcss"; 하나로 통합되었습니다.
-*/
-
 @plugin "tailwindcss-animate";
-/* 애니메이션 플러그인을 사용 중이라면 추가 */
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+/* ============ Theme Variables ============ */
+
 :root {
     --background: 0 0% 100%;
-    --foreground: 0 0% 3.9%;
+    --foreground: 240 10% 10%;
     --card: 0 0% 100%;
-    --card-foreground: 0 0% 3.9%;
+    --card-foreground: 240 10% 10%;
     --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 3.9%;
-    --primary: 221.2 83.2% 53.3%;
-    --primary-foreground: 210 40% 98%;
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 221.2 83.2% 53.3%;
-    --radius: 0.5rem;
+    --popover-foreground: 240 10% 10%;
+    --primary: 330 100% 50%;
+    /* #ff0080 */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 240 5% 96%;
+    --secondary-foreground: 240 6% 10%;
+    --muted: 240 5% 96%;
+    --muted-foreground: 240 4% 46%;
+    --accent: 263 70% 58%;
+    /* #8b5cf6 */
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 240 6% 90%;
+    --input: 240 6% 90%;
+    --ring: 330 100% 50%;
+    --radius: 0.625rem;
+
+    --gradient-start: #ff0080;
+    --gradient-end: #8b5cf6;
+    --sidebar-width: 128px;
+    --header-height: 80px;
 }
 
 .dark {
     --background: 270 44% 3.5%;
     /* #09050d */
     --foreground: 0 0% 100%;
-    /* #ffffff */
     --card: 240 4% 9.4%;
     /* #171719 */
     --card-foreground: 0 0% 100%;
     --popover: 240 4% 9.4%;
     --popover-foreground: 0 0% 100%;
-    --primary: 263 53% 59%;
-    /* #7F56D9 */
+    --primary: 322 80% 43%;
+    /* #c71585 */
     --primary-foreground: 0 0% 100%;
     --secondary: 240 4% 14%;
     --secondary-foreground: 0 0% 100%;
     --muted: 240 4% 14%;
-    --muted-foreground: 217 10% 64.8%;
-    /* #9ca3af */
-    --accent: 263 53% 59%;
-    /* #7F56D9 */
+    --muted-foreground: 217 10% 65%;
+    --accent: 263 53% 52%;
+    /* #6b46c1 */
     --accent-foreground: 0 0% 100%;
     --destructive: 4 90% 58%;
-    /* #F44336 */
     --destructive-foreground: 0 0% 100%;
-    --border: 240 4% 12%;
-    --input: 240 4% 12%;
-    --ring: 263 53% 59%;
-    /* #7F56D9 */
+    --border: 240 4% 16%;
+    --input: 240 4% 16%;
+    --ring: 322 80% 43%;
 
-    --sidebar-width: 256px;
-    --sidebar-collapsed-width: 64px;
+    --gradient-start: #c71585;
+    --gradient-end: #6b46c1;
+    --sidebar-width: 128px;
+    --header-height: 80px;
 }
 
 @theme {
@@ -99,10 +101,6 @@
     --radius-sm: calc(var(--radius) - 4px);
 }
 
-/* v4에서는 @layer base 구문 없이도 전역 스타일 적용이 가능하지만,
-  Tailwind 리셋 스타일과의 순서를 위해 @layer base를 유지하는 것이 안전합니다.
-  단, v4에서는 @layer base 내부에 표준 CSS 문법을 권장합니다.
-*/
 @layer base {
     * {
         @apply border-border;
@@ -113,40 +111,44 @@
     }
 }
 
-/* ============ Design System Utility Classes ============ */
+/* ============ Gradient Utilities ============ */
 
-.card-premium {
-    border-radius: 1.5rem;
-    border: 1px solid rgba(255, 255, 255, 0.06);
-    background: hsl(var(--card));
+.gradient-accent {
+    background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
 }
 
-.glass {
+.gradient-accent-text {
+    background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.card-glass {
     background: hsl(var(--card) / 0.6);
     backdrop-filter: blur(24px);
     -webkit-backdrop-filter: blur(24px);
-    border: 1px solid rgba(255, 255, 255, 0.06);
+    border: 1px solid hsl(var(--border));
 }
+
+/* ============ Design System Utility Classes ============ */
 
 .hover-glow {
     transition: box-shadow 0.3s ease;
 }
 
 .hover-glow:hover {
-    box-shadow: 0 0 20px hsl(var(--primary) / 0.15),
-                0 0 60px hsl(var(--primary) / 0.05);
+    box-shadow: 0 0 20px color-mix(in srgb, var(--gradient-start) 15%, transparent),
+                0 0 60px color-mix(in srgb, var(--gradient-end) 5%, transparent);
 }
 
-.sidebar-transition {
-    transition: width 200ms ease, padding 200ms ease;
-}
+/* ============ Scrollbar ============ */
 
 * {
     scrollbar-width: thin;
     scrollbar-color: hsl(var(--border)) transparent;
 }
 
-/* WebKit 스크롤바 (Chrome, Safari, Edge) */
 ::-webkit-scrollbar {
     width: 8px;
     height: 8px;
@@ -154,7 +156,6 @@
 
 ::-webkit-scrollbar-track {
     background-color: transparent;
-    /* @apply 대신 표준 CSS 권장 */
 }
 
 ::-webkit-scrollbar-thumb {
@@ -168,13 +169,11 @@
 
 /* ============ React Grid Layout Fixes ============ */
 
-/* Base grid item styling */
 .react-grid-item {
     transition: all 200ms ease;
     transition-property: left, top, width, height;
 }
 
-/* Editing mode - show resize handles */
 .react-grid-item>.react-resizable-handle {
     position: absolute;
     width: 20px;
@@ -199,57 +198,49 @@
     border-radius: 0 0 2px 0;
 }
 
-/* Dragging state */
 .react-grid-item.react-draggable-dragging {
     transition: none;
     z-index: 100;
     box-shadow: 0 20px 40px -12px hsl(var(--primary) / 0.3);
 }
 
-/* Resizing state */
 .react-grid-item.resizing {
     transition: none;
     z-index: 100;
 }
 
-/* Placeholder during drag/resize */
 .react-grid-placeholder {
     background: hsl(var(--primary) / 0.15);
     border: 2px dashed hsl(var(--primary) / 0.5);
-    border-radius: 1.5rem;
+    border-radius: 1rem;
     opacity: 1;
     transition: all 100ms ease;
 }
 
-/* ============ Mobile Responsive Styles ============ */
+/* ============ Mobile Responsive ============ */
 
-/* Hide sidebar on mobile - handled by component */
 @media (max-width: 767px) {
-
-    /* Mobile menu button spacing */
     main {
         padding-top: 1rem;
     }
 
-    /* Smaller gaps on mobile */
     .react-grid-layout {
         margin: 0 -0.5rem;
     }
 
-    /* Full width cards on very small screens */
     .react-grid-item {
         min-width: 100% !important;
     }
 }
 
-/* Tablet adjustments */
 @media (min-width: 768px) and (max-width: 1023px) {
     .react-grid-layout {
         margin: 0;
     }
 }
 
-/* ============ Animation Enhancements ============ */
+/* ============ Animations ============ */
+
 @keyframes fadeIn {
     from {
         opacity: 0;
@@ -262,25 +253,38 @@
     }
 }
 
+@keyframes pageEnter {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 .react-grid-item {
     animation: fadeIn 300ms ease-out;
 }
 
-/* Disable animation during dragging */
 .react-grid-item.react-draggable-dragging {
     animation: none;
 }
 
-/* ============ Text Overflow Protection ============ */
+.page-enter {
+    animation: pageEnter 300ms ease-out;
+}
 
-/* Prevent text overflow in flex containers */
+/* ============ Text Overflow ============ */
+
 .text-truncate {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
 }
 
-/* Multi-line truncation */
 .line-clamp-1 {
     display: -webkit-box;
     -webkit-line-clamp: 1;
@@ -295,7 +299,6 @@
     overflow: hidden;
 }
 
-/* Ensure button and label text doesn't wrap */
 button,
 label,
 .btn,
@@ -303,7 +306,6 @@ select option {
     white-space: nowrap;
 }
 
-/* Fix long text in sidebar nav items */
 nav a span,
 nav button span {
     overflow: hidden;
@@ -311,7 +313,8 @@ nav button span {
     min-width: 0;
 }
 
-/* Responsive KPI card text sizing */
+/* ============ KPI Responsive ============ */
+
 @media (max-width: 1280px) {
     .kpi-value {
         font-size: 1.5rem !important;
@@ -328,7 +331,6 @@ nav button span {
     }
 }
 
-/* Dashboard header - prevent wrap on widget titles */
 .widget-title {
     overflow: hidden;
     text-overflow: ellipsis;
@@ -336,7 +338,6 @@ nav button span {
     max-width: 100%;
 }
 
-/* Fix header controls overflow */
 .header-controls {
     display: flex;
     flex-wrap: wrap;
@@ -344,7 +345,6 @@ nav button span {
     align-items: center;
 }
 
-/* Compact mode for buttons */
 @media (max-width: 1024px) {
     .btn-compact span {
         display: none;

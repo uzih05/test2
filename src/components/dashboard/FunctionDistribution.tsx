@@ -45,9 +45,10 @@ export function FunctionDistribution({ data }: FunctionDistributionProps) {
                         </Pie>
                         <Tooltip
                             contentStyle={{
-                                backgroundColor: '#171719',
-                                border: '1px solid rgba(255, 255, 255, 0.06)',
+                                backgroundColor: 'hsl(var(--card))',
+                                border: '1px solid hsl(var(--border))',
                                 borderRadius: '12px',
+                                color: 'hsl(var(--foreground))',
                             }}
                             formatter={(value) => [formatNumber(typeof value === 'number' ? value : 0), 'Count']}
                         />

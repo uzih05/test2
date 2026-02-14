@@ -44,7 +44,7 @@ export function QuickStartGuide({ onStartWCS, onStartDocker }: QuickStartGuidePr
       {/* Two cards: WCS + Docker */}
       <div className="grid gap-4 md:grid-cols-2">
         {/* WCS Cloud Card */}
-        <div className="rounded-3xl border border-white/[0.06] bg-card p-6 space-y-4 flex flex-col">
+        <div className="rounded-2xl border border-border bg-card p-6 space-y-4 flex flex-col">
           <div className="flex items-start gap-3">
             <div className="rounded-xl p-3 bg-blue-500/10 text-blue-500">
               <Cloud className="h-5 w-5" />
@@ -97,7 +97,7 @@ export function QuickStartGuide({ onStartWCS, onStartDocker }: QuickStartGuidePr
         </div>
 
         {/* Self-Hosted Docker Card */}
-        <div className="rounded-3xl border border-white/[0.06] bg-card p-6 space-y-4 flex flex-col">
+        <div className="rounded-2xl border border-border bg-card p-6 space-y-4 flex flex-col">
           <div className="flex items-start gap-3">
             <div className="rounded-xl p-3 bg-orange-500/10 text-orange-500">
               <Server className="h-5 w-5" />
@@ -109,7 +109,7 @@ export function QuickStartGuide({ onStartWCS, onStartDocker }: QuickStartGuidePr
           </div>
 
           {/* Docker command */}
-          <div className="flex items-center gap-2 rounded-xl bg-white/[0.04] border border-white/[0.06] px-4 py-2.5">
+          <div className="flex items-center gap-2 rounded-xl bg-muted/50 border border-border px-4 py-2.5">
             <code className="flex-1 text-xs text-foreground font-mono truncate">$ {dockerCommand}</code>
             <button
               onClick={() => handleCopy(dockerCommand, 'docker')}
@@ -141,15 +141,15 @@ export function QuickStartGuide({ onStartWCS, onStartDocker }: QuickStartGuidePr
 
           {/* Default connection info */}
           <div className="grid grid-cols-3 gap-2 text-xs">
-            <div className="rounded-lg bg-white/[0.04] border border-white/[0.06] px-3 py-2">
+            <div className="rounded-lg bg-muted/50 border border-border px-3 py-2">
               <span className="text-muted-foreground">Host</span>
               <p className="font-mono font-medium">localhost</p>
             </div>
-            <div className="rounded-lg bg-white/[0.04] border border-white/[0.06] px-3 py-2">
+            <div className="rounded-lg bg-muted/50 border border-border px-3 py-2">
               <span className="text-muted-foreground">HTTP</span>
               <p className="font-mono font-medium">8080</p>
             </div>
-            <div className="rounded-lg bg-white/[0.04] border border-white/[0.06] px-3 py-2">
+            <div className="rounded-lg bg-muted/50 border border-border px-3 py-2">
               <span className="text-muted-foreground">gRPC</span>
               <p className="font-mono font-medium">50051</p>
             </div>
@@ -168,7 +168,7 @@ export function QuickStartGuide({ onStartWCS, onStartDocker }: QuickStartGuidePr
       </div>
 
       {/* SDK Section */}
-      <div className="rounded-3xl border border-white/[0.06] bg-card p-6 space-y-4">
+      <div className="rounded-2xl border border-border bg-card p-6 space-y-4">
         <div className="flex items-start gap-3">
           <div className="rounded-xl p-3 bg-violet-500/10 text-violet-500">
             <Package className="h-5 w-5" />
@@ -180,7 +180,7 @@ export function QuickStartGuide({ onStartWCS, onStartDocker }: QuickStartGuidePr
         </div>
 
         {/* pip install command */}
-        <div className="flex items-center gap-2 rounded-xl bg-white/[0.04] border border-white/[0.06] px-4 py-2.5">
+        <div className="flex items-center gap-2 rounded-xl bg-muted/50 border border-border px-4 py-2.5">
           <code className="flex-1 text-sm text-foreground font-mono">$ {t('quickStart.sdkCommand')}</code>
           <button
             onClick={() => handleCopy(t('quickStart.sdkCommand'), 'sdk')}

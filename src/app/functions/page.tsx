@@ -66,7 +66,7 @@ function FunctionDetailModal({ listData, onClose }: FunctionDetailModalProps) {
       />
 
       {/* Modal */}
-      <div className="relative z-10 w-full max-w-3xl max-h-[85vh] overflow-auto rounded-3xl border border-border bg-card shadow-2xl mx-4">
+      <div className="relative z-10 w-full max-w-3xl max-h-[85vh] overflow-auto rounded-2xl border border-border bg-card shadow-2xl mx-4">
         {/* Header */}
         <div className="sticky top-0 flex items-center justify-between border-b border-border bg-card px-6 py-4">
           <div className="flex items-center gap-2">
@@ -275,7 +275,7 @@ function AskAISection() {
   };
 
   return (
-    <div className="rounded-3xl border border-primary/30 bg-primary/5 p-4">
+    <div className="rounded-2xl border border-primary/30 bg-primary/5 p-4">
       <div className="flex items-center gap-2 mb-3">
         <MessageSquare className="h-4 w-4 text-primary" />
         <h3 className="font-semibold">{t('functions.askAI')}</h3>
@@ -331,7 +331,7 @@ function FunctionCard({ func, onClick }: FunctionCardProps) {
   return (
     <button
       onClick={onClick}
-      className="w-full text-left rounded-3xl border border-white/[0.06] bg-card p-4 hover:border-primary/50 hover:shadow-lg transition-all"
+      className="w-full text-left rounded-2xl border border-border bg-card p-4 hover:border-primary/50 hover:shadow-lg transition-all"
     >
       <div className="flex items-start justify-between gap-4">
         <div className="min-w-0 flex-1">
@@ -688,7 +688,7 @@ export default function FunctionsPage() {
       <AskAISection />
 
       {/* Search & Filters */}
-      <div className="rounded-3xl border border-white/[0.06] bg-card p-4 space-y-4">
+      <div className="rounded-2xl border border-border bg-card p-4 space-y-4">
         <div className="flex items-center gap-3 flex-wrap">
           {/* Search Input */}
           <div className="relative flex-1 min-w-[200px]">
@@ -799,7 +799,7 @@ export default function FunctionsPage() {
       {isLoading ? (
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {Array.from({ length: 6 }).map((_, i) => (
-            <div key={i} className="h-40 animate-pulse rounded-3xl border border-border bg-muted" />
+            <div key={i} className="h-40 animate-pulse rounded-2xl border border-border bg-muted" />
           ))}
         </div>
       ) : functions.length === 0 ? (
@@ -811,7 +811,7 @@ export default function FunctionsPage() {
           )}
         </div>
       ) : viewMode === 'tree' && fileTree ? (
-        <div className="rounded-3xl border border-white/[0.06] bg-card overflow-hidden">
+        <div className="rounded-2xl border border-border bg-card overflow-hidden">
           <FileTreeNodeComponent
             node={fileTree}
             onSelectFunction={(func) => setSelectedFunction(func)}

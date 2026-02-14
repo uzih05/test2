@@ -58,25 +58,26 @@ export function ExecutionTimeline({ data }: ExecutionTimelineProps) {
               <stop offset="95%" stopColor="#3b82f6" stopOpacity={0} />
             </linearGradient>
           </defs>
-          <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.04)" opacity={0.3} />
+          <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" opacity={0.3} />
           <XAxis
             dataKey="time"
-            tick={{ fill: '#9ca3af', fontSize: 12 }}
-            axisLine={{ stroke: 'rgba(255,255,255,0.04)' }}
-            tickLine={{ stroke: 'rgba(255,255,255,0.04)' }}
+            tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 12 }}
+            axisLine={{ stroke: 'hsl(var(--border))' }}
+            tickLine={{ stroke: 'hsl(var(--border))' }}
           />
           <YAxis
-            tick={{ fill: '#9ca3af', fontSize: 12 }}
-            axisLine={{ stroke: 'rgba(255,255,255,0.04)' }}
-            tickLine={{ stroke: 'rgba(255,255,255,0.04)' }}
+            tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 12 }}
+            axisLine={{ stroke: 'hsl(var(--border))' }}
+            tickLine={{ stroke: 'hsl(var(--border))' }}
           />
           <Tooltip
             contentStyle={{
-              backgroundColor: '#171719',
-              border: '1px solid rgba(255, 255, 255, 0.06)',
+              backgroundColor: 'hsl(var(--card))',
+              border: '1px solid hsl(var(--border))',
               borderRadius: '12px',
+              color: 'hsl(var(--foreground))',
             }}
-            labelStyle={{ color: '#fff' }}
+            labelStyle={{ color: 'hsl(var(--foreground))' }}
           />
           <Legend />
           <Area

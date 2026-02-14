@@ -84,9 +84,9 @@ export default function TracesPage() {
       </div>
 
       {/* Traces List */}
-      <div className="rounded-3xl border border-white/[0.06] bg-card overflow-hidden">
+      <div className="rounded-2xl border border-border bg-card overflow-hidden">
         {/* Table Header */}
-        <div className="hidden md:grid grid-cols-[1fr_100px_100px_80px_120px_32px] gap-4 px-5 py-3 border-b border-border bg-white/[0.02] text-xs font-medium text-muted-foreground">
+        <div className="hidden md:grid grid-cols-[1fr_100px_100px_80px_120px_32px] gap-4 px-5 py-3 border-b border-border bg-muted/20 text-xs font-medium text-muted-foreground">
           <span>{t('traces.rootFunction')}</span>
           <span>{t('common.status')}</span>
           <span>{t('traces.duration')}</span>

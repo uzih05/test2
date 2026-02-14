@@ -1,7 +1,8 @@
 /**
  * Language Switcher Component
- * 
+ *
  * Dropdown to switch between Korean, English, Japanese.
+ * Supports 'header' variant for gradient header.
  */
 
 'use client';
@@ -11,7 +12,11 @@ import { Globe, ChevronDown, Check } from 'lucide-react';
 import { useTranslation, LANGUAGES, LanguageCode } from '@/lib/i18n';
 import { cn } from '@/lib/utils';
 
-export function LanguageSwitcher() {
+interface LanguageSwitcherProps {
+    variant?: 'default' | 'header';
+}
+
+export function LanguageSwitcher({ variant = 'default' }: LanguageSwitcherProps) {
     const { language, setLanguage } = useTranslation();
     const [isOpen, setIsOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
@@ -28,6 +33,7 @@ export function LanguageSwitcher() {
     }, []);
 
     const currentLang = LANGUAGES[language];
+    const isHeader = variant === 'header';
 
     return (
         <div className="relative" ref={dropdownRef}>
@@ -36,22 +42,26 @@ export function LanguageSwitcher() {
                 onClick={() => setIsOpen(!isOpen)}
                 className={cn(
                     'flex items-center gap-2 px-3 py-2 rounded-xl border transition-all',
-                    'bg-card border-white/[0.06] hover:border-primary/40',
-                    isOpen && 'border-primary ring-1 ring-primary/20'
+                    isHeader
+                        ? 'bg-white/10 border-white/20 hover:bg-white/15 text-white'
+                        : 'bg-card border-border hover:border-primary/40',
+                    isOpen && !isHeader && 'border-primary ring-1 ring-primary/20',
+                    isOpen && isHeader && 'bg-white/20 border-white/30'
                 )}
                 aria-label="Select language"
             >
-                <Globe className="h-4 w-4 text-muted-foreground" />
+                <Globe className={cn('h-4 w-4', isHeader ? 'text-white/70' : 'text-muted-foreground')} />
                 <span className="text-sm font-medium hidden sm:inline">{currentLang.flag}</span>
                 <ChevronDown className={cn(
-                    'h-4 w-4 text-muted-foreground transition-transform',
+                    'h-4 w-4 transition-transform',
+                    isHeader ? 'text-white/70' : 'text-muted-foreground',
                     isOpen && 'rotate-180'
                 )} />
             </button>
 
             {/* Dropdown */}
             {isOpen && (
-                <div className="absolute right-0 top-full mt-2 w-40 rounded-xl border border-white/[0.06] bg-card p-1 shadow-xl z-50">
+                <div className="absolute right-0 top-full mt-2 w-40 rounded-xl border border-border bg-card p-1 shadow-xl z-50">
                     {(Object.values(LANGUAGES) as typeof LANGUAGES[LanguageCode][]).map((lang) => (
                         <button
                             key={lang.code}

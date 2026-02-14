@@ -14,10 +14,8 @@ import {
   ChevronLeft,
   Plus,
   Loader2,
-  X,
   Activity,
   Code2,
-  Clock,
 } from 'lucide-react';
 import { StatusBadge } from '@/components/ui/StatusBadge';
 import {
@@ -92,7 +90,7 @@ function FunctionListView({ onSelect }: { onSelect: (name: string) => void }) {
 
       {/* Function Table */}
       <div className="rounded-xl border border-border bg-card overflow-hidden">
-        <div className="hidden md:grid grid-cols-[1fr_120px_120px_32px] gap-4 px-5 py-3 border-b border-border bg-white/[0.02] text-xs font-medium text-muted-foreground">
+        <div className="hidden md:grid grid-cols-[1fr_120px_120px_32px] gap-4 px-5 py-3 border-b border-border bg-muted/20 text-xs font-medium text-muted-foreground">
           <span>{t('functions.title')}</span>
           <span>{t('cache.goldenDataset')}</span>
           <span>{t('functions.executions')}</span>
@@ -208,7 +206,7 @@ function FunctionDetailView({ functionName, onBack }: { functionName: string; on
       {/* Execution Table */}
       <div className="rounded-xl border border-border bg-card overflow-hidden">
         <table className="w-full">
-          <thead className="border-b border-border bg-white/[0.02]">
+          <thead className="border-b border-border bg-muted/20">
             <tr>
               <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground">Status</th>
               <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground">{t('executions.duration')}</th>

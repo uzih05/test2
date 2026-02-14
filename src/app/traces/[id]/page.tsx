@@ -292,7 +292,7 @@ function AIAnalysisSection({ traceId, language, hasApiKey }: AIAnalysisSectionPr
   }
 
   return (
-    <div className="rounded-3xl border border-primary/30 bg-primary/5 p-4">
+    <div className="rounded-2xl border border-primary/30 bg-primary/5 p-4">
       <div className="flex items-center gap-2 mb-3">
         <Sparkles className="h-4 w-4 text-primary" />
         <h3 className="font-semibold">{t('traces.aiAnalysis')}</h3>
@@ -377,7 +377,7 @@ export default function Page() {
 
       {/* Summary Cards */}
       <div className="grid gap-4 md:grid-cols-4">
-        <div className="rounded-3xl border border-white/[0.06] bg-card p-4">
+        <div className="rounded-2xl border border-border bg-card p-4">
           <div className="flex items-center gap-2 text-muted-foreground mb-2">
             <GitBranch className="h-4 w-4" />
             <span className="text-xs">{t('traces.status')}</span>
@@ -385,7 +385,7 @@ export default function Page() {
           <StatusBadge status={trace.status} />
         </div>
 
-        <div className="rounded-3xl border border-white/[0.06] bg-card p-4">
+        <div className="rounded-2xl border border-border bg-card p-4">
           <div className="flex items-center gap-2 text-muted-foreground mb-2">
             <Clock className="h-4 w-4" />
             <span className="text-xs">{t('traces.totalDuration')}</span>
@@ -393,7 +393,7 @@ export default function Page() {
           <p className="text-xl font-bold">{formatDuration(trace.total_duration_ms)}</p>
         </div>
 
-        <div className="rounded-3xl border border-white/[0.06] bg-card p-4">
+        <div className="rounded-2xl border border-border bg-card p-4">
           <div className="flex items-center gap-2 text-muted-foreground mb-2">
             <Layers className="h-4 w-4" />
             <span className="text-xs">{t('traces.spanCount')}</span>
@@ -401,7 +401,7 @@ export default function Page() {
           <p className="text-xl font-bold">{trace.span_count}</p>
         </div>
 
-        <div className="rounded-3xl border border-white/[0.06] bg-card p-4">
+        <div className="rounded-2xl border border-border bg-card p-4">
           <div className="flex items-center gap-2 text-muted-foreground mb-2">
             <Clock className="h-4 w-4" />
             <span className="text-xs">{t('traces.startTime')}</span>
@@ -414,7 +414,7 @@ export default function Page() {
       <AIAnalysisSection traceId={traceId} language={language} hasApiKey={hasApiKey} />
 
       {/* Trace View */}
-      <div className="rounded-3xl border border-white/[0.06] bg-card p-4">
+      <div className="rounded-2xl border border-border bg-card p-4">
         <div className="flex items-center justify-between mb-4">
           <h3 className="font-semibold">
             {viewMode === 'waterfall' ? t('traces.waterfallView') : t('traces.treeView')}
@@ -433,7 +433,7 @@ export default function Page() {
 
       {/* Error Details */}
       {trace.status === 'ERROR' && (
-        <div className="rounded-3xl border border-red-500/30 bg-red-500/5 p-4">
+        <div className="rounded-2xl border border-red-500/30 bg-red-500/5 p-4">
           <div className="flex items-center gap-2 mb-3">
             <AlertTriangle className="h-4 w-4 text-red-500" />
             <h3 className="font-semibold text-red-500">{t('traces.errorsInTrace')}</h3>

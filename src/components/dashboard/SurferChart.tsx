@@ -243,7 +243,7 @@ export function SurferChart({
                     {showGrid && (
                         <CartesianGrid
                             strokeDasharray="3 3"
-                            stroke="rgba(255,255,255,0.04)"
+                            className="[&_line]:stroke-border"
                             opacity={0.5}
                             vertical={false}
                         />
@@ -253,17 +253,17 @@ export function SurferChart({
                     {showXAxis && (
                         <XAxis
                             dataKey="name"
-                            tick={{ fill: '#9ca3af', fontSize: 12 }}
-                            axisLine={{ stroke: 'rgba(255,255,255,0.04)' }}
-                            tickLine={{ stroke: 'rgba(255,255,255,0.04)' }}
+                            tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 12 }}
+                            axisLine={{ stroke: 'hsl(var(--border))' }}
+                            tickLine={{ stroke: 'hsl(var(--border))' }}
                         />
                     )}
 
                     {showYAxis && (
                         <YAxis
-                            tick={{ fill: '#9ca3af', fontSize: 12 }}
-                            axisLine={{ stroke: 'rgba(255,255,255,0.04)' }}
-                            tickLine={{ stroke: 'rgba(255,255,255,0.04)' }}
+                            tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 12 }}
+                            axisLine={{ stroke: 'hsl(var(--border))' }}
+                            tickLine={{ stroke: 'hsl(var(--border))' }}
                             width={40}
                         />
                     )}
@@ -272,12 +272,13 @@ export function SurferChart({
                     {showTooltip && (
                         <Tooltip
                             contentStyle={{
-                                backgroundColor: '#171719',
-                                border: '1px solid rgba(255, 255, 255, 0.06)',
+                                backgroundColor: 'hsl(var(--card))',
+                                border: '1px solid hsl(var(--border))',
                                 borderRadius: '12px',
-                                boxShadow: '0 4px 20px rgba(0, 0, 0, 0.4)',
+                                boxShadow: '0 4px 20px rgba(0, 0, 0, 0.2)',
+                                color: 'hsl(var(--foreground))',
                             }}
-                            labelStyle={{ color: '#ffffff' }}
+                            labelStyle={{ color: 'hsl(var(--foreground))' }}
                             itemStyle={{ color: SUNSET_CORAL }}
                         />
                     )}
@@ -302,7 +303,7 @@ export function SurferChart({
                         activeDot={{
                             r: 6,
                             fill: strokeColor,
-                            stroke: '#171719',
+                            stroke: 'hsl(var(--card))',
                             strokeWidth: 2,
                         }}
                     />
@@ -326,15 +327,15 @@ export function FillModeSelector({ value, onChange }: FillModeSelectorProps) {
     ];
 
     return (
-        <div className="flex items-center gap-1 rounded-xl bg-white/[0.06] p-1">
+        <div className="flex items-center gap-1 rounded-xl bg-muted p-1">
             {modes.map(({ mode, label }) => (
                 <button
                     key={mode}
                     onClick={() => onChange(mode)}
                     className={`px-3 py-1.5 text-xs font-medium rounded-lg transition-all ${
                         value === mode
-                            ? 'bg-[#ec5a53] text-white shadow-md'
-                            : 'text-gray-400 hover:text-white'
+                            ? 'bg-primary text-primary-foreground shadow-md'
+                            : 'text-muted-foreground hover:text-foreground'
                     }`}
                 >
                     {label}
