@@ -58,21 +58,21 @@ export function ExecutionTimeline({ data }: ExecutionTimelineProps) {
               <stop offset="95%" stopColor="#3b82f6" stopOpacity={0} />
             </linearGradient>
           </defs>
-          <CartesianGrid strokeDasharray="3 3" stroke="#2a2a2e" opacity={0.3} />
+          <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.04)" opacity={0.3} />
           <XAxis
             dataKey="time"
-            tick={{ fill: '#888', fontSize: 12 }}
-            axisLine={{ stroke: '#2a2a2e' }}
-            tickLine={{ stroke: '#2a2a2e' }}
+            tick={{ fill: '#9ca3af', fontSize: 12 }}
+            axisLine={{ stroke: 'rgba(255,255,255,0.04)' }}
+            tickLine={{ stroke: 'rgba(255,255,255,0.04)' }}
           />
           <YAxis
-            tick={{ fill: '#888', fontSize: 12 }}
-            axisLine={{ stroke: '#2a2a2e' }}
-            tickLine={{ stroke: '#2a2a2e' }}
+            tick={{ fill: '#9ca3af', fontSize: 12 }}
+            axisLine={{ stroke: 'rgba(255,255,255,0.04)' }}
+            tickLine={{ stroke: 'rgba(255,255,255,0.04)' }}
           />
           <Tooltip
             contentStyle={{
-              backgroundColor: '#1a1a1e',
+              backgroundColor: '#171719',
               border: '1px solid rgba(255, 255, 255, 0.06)',
               borderRadius: '12px',
             }}

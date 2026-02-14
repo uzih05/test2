@@ -45,7 +45,7 @@ export function FunctionDistribution({ data }: FunctionDistributionProps) {
                         </Pie>
                         <Tooltip
                             contentStyle={{
-                                backgroundColor: '#1a1a1e',
+                                backgroundColor: '#171719',
                                 border: '1px solid rgba(255, 255, 255, 0.06)',
                                 borderRadius: '12px',
                             }}

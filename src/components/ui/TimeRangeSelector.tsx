@@ -140,7 +140,7 @@ export function TimeRangeSelector() {
 
             {/* 드롭다운 */}
             {isOpen && (
-                <div className="absolute right-0 top-full mt-2 w-80 rounded-2xl border border-white/[0.06] bg-card p-4 shadow-xl z-50">
+                <div className="absolute right-0 top-full mt-2 w-80 rounded-3xl border border-white/[0.06] bg-card p-4 shadow-xl z-50">
                     {!showCustom ? (
                         <>
                             {/* 슬라이더 섹션 */}

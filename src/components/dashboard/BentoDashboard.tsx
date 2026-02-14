@@ -59,13 +59,13 @@ function WidgetCard({
 }) {
   return (
     <div className={cn(
-      "h-full w-full rounded-3xl border border-white/[0.06] bg-card shadow-sm overflow-hidden flex flex-col transition-all duration-300 hover:shadow-lg hover:shadow-primary/[0.05]",
+      "h-full w-full rounded-3xl border border-white/[0.06] bg-card shadow-sm overflow-hidden flex flex-col transition-all duration-300 hover:shadow-lg hover:shadow-primary/[0.08]",
       editable && "border-dashed border-primary/40"
     )}>
       {/* Header */}
-      <div className="flex items-center justify-between px-5 pt-5 pb-1">
+      <div className="flex items-center justify-between px-6 pt-6 pb-1">
         <div className="flex items-center gap-2 min-w-0">
-          <span className="flex items-center justify-center h-7 w-7 rounded-lg bg-white/[0.06] text-primary shrink-0">{icon}</span>
+          <span className="flex items-center justify-center h-7 w-7 rounded-lg bg-primary/[0.08] text-primary shrink-0">{icon}</span>
           <h3 className="font-semibold text-base truncate">{title}</h3>
         </div>
 
@@ -73,7 +73,7 @@ function WidgetCard({
           <div className="flex items-center gap-1 shrink-0">
             {/* Size Selector */}
             {availableSizes && availableSizes.length > 1 && onSizeChange && (
-              <div className="flex items-center gap-0.5 bg-white/[0.06] rounded-lg p-0.5">
+              <div className="flex items-center gap-0.5 bg-primary/[0.08] rounded-lg p-0.5">
                 {availableSizes.map((s) => (
                   <button
                     key={s}
@@ -110,7 +110,7 @@ function WidgetCard({
       </div>
 
       {/* Content */}
-      <div className="flex-1 px-5 pb-5 pt-3 overflow-auto min-h-0">
+      <div className="flex-1 px-6 pb-6 pt-3 overflow-auto min-h-0">
         {children}
       </div>
     </div>

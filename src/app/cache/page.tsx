@@ -21,7 +21,7 @@ import { useTranslation } from '@/lib/i18n';
 import { useDashboardStore } from '@/lib/stores/useDashboardStore';
 import { TimeRangeSelector } from '@/components/ui/TimeRangeSelector';
 import { formatDuration, formatNumber, cn } from '@/lib/utils';
-import type { DriftResult, GoldenCandidate } from '@/lib/types/api';
+import type { DriftResult } from '@/lib/types/api';
 
 // ============ KPI Card ============
 interface KPICardProps {
@@ -141,7 +141,7 @@ function DriftDetectionSection() {
   };
 
   return (
-    <div className="rounded-2xl border border-border bg-card p-6">
+    <div className="rounded-3xl border border-white/[0.06] bg-card p-6">
       <h2 className="text-lg font-semibold flex items-center gap-2 mb-4">
         <AlertTriangle className="h-5 w-5 text-orange-500" />
         {t('cache.drift')}

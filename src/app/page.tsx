@@ -31,7 +31,6 @@ import { SurferChart } from '@/components/dashboard/SurferChart';
 import { RecentErrors } from '@/components/dashboard/RecentErrors';
 import { SystemStatusCard } from '@/components/dashboard/SystemStatusCard';
 import { TimeRangeSelector, FillModeSelector } from '@/components/ui/TimeRangeSelector';
-import { LanguageSwitcher } from '@/components/ui/LanguageSwitcher';
 import { useDashboardStore } from '@/lib/stores/useDashboardStore';
 import { useTranslation } from '@/lib/i18n';
 import {
@@ -341,7 +340,7 @@ function WidgetPicker({
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50" onClick={onClose}>
             <div
-                className="bg-card border border-white/[0.06] rounded-2xl shadow-2xl w-full max-w-lg mx-4 max-h-[70vh] overflow-hidden"
+                className="bg-card border border-white/[0.06] rounded-3xl shadow-2xl w-full max-w-lg mx-4 max-h-[70vh] overflow-hidden"
                 onClick={(e) => e.stopPropagation()}
             >
                 <div className="flex items-center justify-between px-6 py-4 border-b border-white/[0.04]">
@@ -420,8 +419,6 @@ export default function DashboardPage() {
     const { timeRangeMinutes } = useDashboardStore();
     const { t } = useTranslation();
     const queryClient = useQueryClient();
-    const { data: status } = useSystemStatus();
-
     const [isEditing, setIsEditing] = useState(false);
     const [showPicker, setShowPicker] = useState(false);
 
@@ -517,12 +514,12 @@ export default function DashboardPage() {
 
     return (
         <div className="min-h-screen bg-background">
-            {/* Header */}
-            <header className="sticky top-0 z-10 border-b border-white/[0.04] bg-background/80 backdrop-blur-sm">
+            {/* Sub Header - dashboard controls */}
+            <div className="border-b border-white/[0.04] bg-background/60 backdrop-blur-sm">
                 <div className="px-4 md:px-6 py-3">
                     <div className="flex flex-wrap items-center gap-3">
                         {/* Title */}
-                        <div className="flex items-center gap-2 ml-10 md:ml-0 min-w-0">
+                        <div className="flex items-center gap-2 min-w-0">
                             <Waves className="h-5 w-5 text-primary shrink-0" />
                             <h1 className="text-lg font-bold tracking-tight truncate">
                                 {t('dashboard.title')}
@@ -536,7 +533,7 @@ export default function DashboardPage() {
                             {/* Add Widget */}
                             <button
                                 onClick={() => setShowPicker(true)}
-                                className="flex items-center gap-1.5 rounded-xl border border-white/[0.06] bg-card px-2.5 py-2 text-sm font-medium transition-colors hover:bg-white/[0.04]"
+                                className="flex items-center gap-1.5 rounded-xl border border-white/[0.06] bg-card px-2.5 py-2 text-sm font-medium transition-colors hover:bg-white/[0.04] hover-glow"
                                 title={t('widgets.addWidget')}
                             >
                                 <Plus className="h-4 w-4" />
@@ -563,7 +560,7 @@ export default function DashboardPage() {
                             {/* Refresh */}
                             <button
                                 onClick={handleRefresh}
-                                className="flex items-center gap-1.5 rounded-xl border border-white/[0.06] bg-card px-2.5 py-2 text-sm font-medium transition-colors hover:bg-white/[0.04]"
+                                className="flex items-center gap-1.5 rounded-xl border border-white/[0.06] bg-card px-2.5 py-2 text-sm font-medium transition-colors hover:bg-white/[0.04] hover-glow"
                                 title={t('common.refresh')}
                             >
                                 <RefreshCw className="h-4 w-4" />
@@ -571,18 +568,10 @@ export default function DashboardPage() {
 
                             {/* Time Range */}
                             <TimeRangeSelector />
-
-                            {/* System Status */}
-                            <div className="hidden lg:block">
-                                <SystemStatusCard status={status} />
-                            </div>
-
-                            {/* Language */}
-                            <LanguageSwitcher />
                         </div>
                     </div>
                 </div>
-            </header>
+            </div>
 
             {/* Content */}
             <main className="p-4 md:p-6">

@@ -20,7 +20,7 @@ export function SystemStatusCard({ status }: SystemStatusCardProps) {
   return (
     <div
       className={cn(
-        'flex items-center gap-3 rounded-xl border px-4 py-2',
+        'flex items-center gap-3 rounded-2xl border px-4 py-2',
         isConnected
           ? 'border-green-500/20 bg-green-500/[0.03]'
           : 'border-red-500/20 bg-red-500/[0.03]'

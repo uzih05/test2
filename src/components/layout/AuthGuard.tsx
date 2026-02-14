@@ -59,7 +59,7 @@ export function AuthGuard({ children }: { children: React.ReactNode }) {
   if (!checked && !USE_MOCK) {
     return (
       <div className="flex h-screen items-center justify-center bg-background">
-        <div className="animate-pulse text-muted-foreground">Loading...</div>
+        <div className="animate-pulse text-muted-foreground text-sm">Loading...</div>
       </div>
     );
   }

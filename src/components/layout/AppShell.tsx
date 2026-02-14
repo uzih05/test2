@@ -7,6 +7,7 @@
 
 import { usePathname } from 'next/navigation';
 import { Sidebar } from './Sidebar';
+import { Header } from './Header';
 import { AuthGuard } from './AuthGuard';
 
 const FULLSCREEN_PAGES = ['/login', '/signup', '/projects'];
@@ -25,12 +26,17 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     );
   }
 
-  // Dashboard pages: sidebar + content
+  // Dashboard pages: sidebar + header + content
   return (
     <AuthGuard>
       <div className="flex h-screen overflow-hidden bg-background">
         <Sidebar />
-        <main className="flex-1 overflow-auto">{children}</main>
+        <div
+          className="flex flex-1 flex-col overflow-hidden transition-[margin] duration-200"
+        >
+          <Header />
+          <main className="flex-1 overflow-auto">{children}</main>
+        </div>
       </div>
     </AuthGuard>
   );

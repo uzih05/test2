@@ -243,7 +243,7 @@ export function SurferChart({
                     {showGrid && (
                         <CartesianGrid
                             strokeDasharray="3 3"
-                            stroke="#2a2a2e"
+                            stroke="rgba(255,255,255,0.04)"
                             opacity={0.5}
                             vertical={false}
                         />
@@ -253,17 +253,17 @@ export function SurferChart({
                     {showXAxis && (
                         <XAxis
                             dataKey="name"
-                            tick={{ fill: '#888', fontSize: 12 }}
-                            axisLine={{ stroke: '#2a2a2e' }}
-                            tickLine={{ stroke: '#2a2a2e' }}
+                            tick={{ fill: '#9ca3af', fontSize: 12 }}
+                            axisLine={{ stroke: 'rgba(255,255,255,0.04)' }}
+                            tickLine={{ stroke: 'rgba(255,255,255,0.04)' }}
                         />
                     )}
 
                     {showYAxis && (
                         <YAxis
-                            tick={{ fill: '#888', fontSize: 12 }}
-                            axisLine={{ stroke: '#2a2a2e' }}
-                            tickLine={{ stroke: '#2a2a2e' }}
+                            tick={{ fill: '#9ca3af', fontSize: 12 }}
+                            axisLine={{ stroke: 'rgba(255,255,255,0.04)' }}
+                            tickLine={{ stroke: 'rgba(255,255,255,0.04)' }}
                             width={40}
                         />
                     )}
@@ -272,7 +272,7 @@ export function SurferChart({
                     {showTooltip && (
                         <Tooltip
                             contentStyle={{
-                                backgroundColor: '#1a1a1e',
+                                backgroundColor: '#171719',
                                 border: '1px solid rgba(255, 255, 255, 0.06)',
                                 borderRadius: '12px',
                                 boxShadow: '0 4px 20px rgba(0, 0, 0, 0.4)',

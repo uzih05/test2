@@ -12,12 +12,10 @@ import {
   ExternalLink,
   CheckCircle,
   XCircle,
-  Palette,
   Server,
   Code2,
   Zap,
   Globe,
-  Clock,
   Info,
   Plus,
   Trash2,
@@ -48,10 +46,10 @@ function StatusCard({ title, icon, status, details, action }: StatusCardProps) {
   const { t } = useTranslation();
   return (
     <div className={cn(
-      'rounded-2xl border p-5 transition-all',
+      'rounded-3xl border p-6 transition-all',
       status === 'connected' && 'border-green-500/30 bg-green-500/5',
       status === 'disconnected' && 'border-red-500/30 bg-red-500/5',
-      status === 'loading' && 'border-border bg-card'
+      status === 'loading' && 'border-white/[0.06] bg-card'
     )}>
       <div className="flex items-start justify-between">
         <div className="flex items-center gap-3">
@@ -104,7 +102,7 @@ interface ConfigItemProps {
 
 function ConfigItem({ label, value, description, editable = false, onChange }: ConfigItemProps) {
   return (
-    <div className="flex items-start justify-between py-4 border-b border-border last:border-0">
+    <div className="flex items-start justify-between py-4 border-b border-white/[0.06] last:border-0">
       <div className="flex-1">
         <p className="text-sm font-medium">{label}</p>
         {description && (
@@ -116,10 +114,10 @@ function ConfigItem({ label, value, description, editable = false, onChange }: C
           type="text"
           value={value}
           onChange={(e) => onChange?.(e.target.value)}
-          className="w-64 rounded-lg border border-border bg-background px-3 py-1.5 text-sm focus:border-primary focus:outline-none"
+          className="w-64 rounded-lg border border-white/[0.06] bg-white/[0.03] px-3 py-1.5 text-sm focus:border-primary focus:outline-none"
         />
       ) : (
-        <code className="text-sm bg-muted px-2 py-1 rounded">{value}</code>
+        <code className="text-sm bg-white/[0.04] px-2 py-1 rounded">{value}</code>
       )}
     </div>
   );
@@ -147,7 +145,7 @@ function StatsOverview() {
   return (
     <div className="grid gap-4 md:grid-cols-2">
       {stats.map((stat) => (
-        <div key={stat.label} className="rounded-xl border border-border bg-card p-4">
+        <div key={stat.label} className="rounded-2xl border border-white/[0.06] bg-card p-4">
           <div className="flex items-center gap-2 text-muted-foreground mb-2">
             {stat.icon}
             <span className="text-xs">{stat.label}</span>
@@ -334,10 +332,10 @@ function ConnectionManager() {
             <div key={conn.id} className="space-y-2">
               <div
                 className={cn(
-                  'flex items-center justify-between rounded-xl border p-4 transition-all',
+                  'flex items-center justify-between rounded-2xl border p-4 transition-all',
                   conn.is_active
                     ? 'border-green-500/30 bg-green-500/5'
-                    : 'border-border bg-card'
+                    : 'border-white/[0.06] bg-card'
                 )}
               >
                 <div className="flex items-center gap-3">
@@ -398,7 +396,7 @@ function ConnectionManager() {
                 </div>
               </div>
               {editingId === conn.id && (
-                <div className="rounded-xl border border-border bg-card p-4 space-y-3">
+                <div className="rounded-2xl border border-white/[0.06] bg-card p-4 space-y-3">
                   <div>
                     <label className="text-xs text-muted-foreground">{t('settings.vectorizerModel')}</label>
                     <div className="flex gap-2 mt-1">
@@ -411,7 +409,7 @@ function ConnectionManager() {
                             'rounded-lg px-3 py-1.5 text-xs font-medium transition-colors',
                             editVectorizer === model
                               ? 'bg-primary text-white'
-                              : 'bg-muted text-muted-foreground hover:text-foreground'
+                              : 'bg-white/[0.04] text-muted-foreground hover:text-foreground'
                           )}
                         >
                           {model === 'openai' ? 'OpenAI (text-embedding-3-small)' : 'HuggingFace (all-MiniLM-L6-v2)'}
@@ -436,7 +434,7 @@ function ConnectionManager() {
                 </div>
               )}
               {keyEditingId === conn.id && (
-                <div className="rounded-xl border border-border bg-card p-4 space-y-3">
+                <div className="rounded-2xl border border-white/[0.06] bg-card p-4 space-y-3">
                   <div className="flex items-center justify-between">
                     <p className="text-sm font-medium">{t('settings.openaiApiKey')}</p>
                     {conn.has_openai_key && (
@@ -452,7 +450,7 @@ function ConnectionManager() {
                       value={connApiKey}
                       onChange={(e) => setConnApiKey(e.target.value)}
                       placeholder="sk-..."
-                      className="flex-1 rounded-lg border border-border bg-background px-3 py-1.5 text-sm focus:border-primary focus:outline-none"
+                      className="flex-1 rounded-lg border border-white/[0.06] bg-white/[0.03] px-3 py-1.5 text-sm focus:border-primary focus:outline-none"
                     />
                     <button
                       onClick={() => handleKeySave(conn.id)}
@@ -494,7 +492,7 @@ function ConnectionManager() {
           ))}
         </div>
       ) : (
-        <div className="rounded-xl border border-dashed border-border p-6 text-center text-sm text-muted-foreground">
+        <div className="rounded-2xl border border-dashed border-white/[0.06] p-6 text-center text-sm text-muted-foreground">
           {t('settings.noConnections')}
         </div>
       )}
@@ -503,13 +501,13 @@ function ConnectionManager() {
       {!showForm ? (
         <button
           onClick={() => { setShowForm(true); resetForm(); }}
-          className="flex items-center gap-2 rounded-lg border border-dashed border-border px-4 py-2.5 text-sm text-muted-foreground hover:border-primary hover:text-primary transition-colors"
+          className="flex items-center gap-2 rounded-lg border border-dashed border-white/[0.06] px-4 py-2.5 text-sm text-muted-foreground hover:border-primary hover:text-primary transition-colors"
         >
           <Plus className="h-4 w-4" />
           {t('settings.addConnection')}
         </button>
       ) : (
-        <div className="rounded-xl border border-border bg-card p-5 space-y-4">
+        <div className="rounded-2xl border border-white/[0.06] bg-card p-6 space-y-4">
           <h4 className="text-sm font-semibold">{t('settings.newConnection')}</h4>
 
           {/* Type Tabs */}
@@ -522,7 +520,7 @@ function ConnectionManager() {
                   'rounded-lg px-3 py-1.5 text-xs font-medium transition-colors',
                   formType === type
                     ? 'bg-primary text-white'
-                    : 'bg-muted text-muted-foreground hover:text-foreground'
+                    : 'bg-white/[0.04] text-muted-foreground hover:text-foreground'
                 )}
               >
                 {type === 'self_hosted' ? t('projects.selfHosted') : t('projects.wcsCloud')}
@@ -538,7 +536,7 @@ function ConnectionManager() {
                 value={formName}
                 onChange={(e) => setFormName(e.target.value)}
                 placeholder={formType === 'wcs_cloud' ? 'My WCS Cluster' : 'My Local Weaviate'}
-                className="mt-1 w-full rounded-lg border border-border bg-background px-3 py-1.5 text-sm focus:border-primary focus:outline-none"
+                className="mt-1 w-full rounded-lg border border-white/[0.06] bg-white/[0.03] px-3 py-1.5 text-sm focus:border-primary focus:outline-none"
               />
             </div>
 
@@ -556,7 +554,7 @@ function ConnectionManager() {
                 value={formHost}
                 onChange={(e) => setFormHost(e.target.value)}
                 placeholder={formType === 'wcs_cloud' ? 'my-cluster.weaviate.network' : 'localhost'}
-                className="mt-1 w-full rounded-lg border border-border bg-background px-3 py-1.5 text-sm focus:border-primary focus:outline-none"
+                className="mt-1 w-full rounded-lg border border-white/[0.06] bg-white/[0.03] px-3 py-1.5 text-sm focus:border-primary focus:outline-none"
               />
             </div>
 
@@ -568,7 +566,7 @@ function ConnectionManager() {
                     type="number"
                     value={formPort}
                     onChange={(e) => setFormPort(Number(e.target.value))}
-                    className="mt-1 w-full rounded-lg border border-border bg-background px-3 py-1.5 text-sm focus:border-primary focus:outline-none"
+                    className="mt-1 w-full rounded-lg border border-white/[0.06] bg-white/[0.03] px-3 py-1.5 text-sm focus:border-primary focus:outline-none"
                   />
                 </div>
                 <div>
@@ -577,7 +575,7 @@ function ConnectionManager() {
                     type="number"
                     value={formGrpcPort}
                     onChange={(e) => setFormGrpcPort(Number(e.target.value))}
-                    className="mt-1 w-full rounded-lg border border-border bg-background px-3 py-1.5 text-sm focus:border-primary focus:outline-none"
+                    className="mt-1 w-full rounded-lg border border-white/[0.06] bg-white/[0.03] px-3 py-1.5 text-sm focus:border-primary focus:outline-none"
                   />
                 </div>
               </div>
@@ -592,7 +590,7 @@ function ConnectionManager() {
                     value={formApiKey}
                     onChange={(e) => setFormApiKey(e.target.value)}
                     placeholder="Your WCS API key"
-                    className="mt-1 w-full rounded-lg border border-border bg-background px-3 py-1.5 text-sm focus:border-primary focus:outline-none"
+                    className="mt-1 w-full rounded-lg border border-white/[0.06] bg-white/[0.03] px-3 py-1.5 text-sm focus:border-primary focus:outline-none"
                   />
                 </div>
                 <div>
@@ -607,7 +605,7 @@ function ConnectionManager() {
                           'rounded-lg px-3 py-1.5 text-xs font-medium transition-colors',
                           formVectorizerModel === model
                             ? 'bg-primary text-white'
-                            : 'bg-muted text-muted-foreground hover:text-foreground'
+                            : 'bg-white/[0.04] text-muted-foreground hover:text-foreground'
                         )}
                       >
                         {model === 'openai' ? 'OpenAI (text-embedding-3-small)' : 'HuggingFace (all-MiniLM-L6-v2)'}
@@ -705,7 +703,7 @@ function AISettings() {
   };
 
   return (
-    <div className="rounded-2xl border border-border bg-card p-5 space-y-4">
+    <div className="rounded-3xl border border-white/[0.06] bg-card p-6 space-y-4">
       <div className="flex items-center justify-between">
         <div>
           <p className="text-sm font-medium">{t('settings.openaiApiKey')} (Global Fallback)</p>
@@ -732,7 +730,7 @@ function AISettings() {
           value={apiKey}
           onChange={(e) => setApiKey(e.target.value)}
           placeholder="sk-..."
-          className="flex-1 rounded-lg border border-border bg-background px-3 py-1.5 text-sm focus:border-primary focus:outline-none"
+          className="flex-1 rounded-lg border border-white/[0.06] bg-white/[0.03] px-3 py-1.5 text-sm focus:border-primary focus:outline-none"
         />
         <button
           onClick={handleSave}
@@ -799,10 +797,10 @@ function QuickLinks() {
           href={link.href}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center justify-between rounded-xl border border-border bg-card p-4 hover:border-primary/50 hover:bg-muted/50 transition-all group"
+          className="flex items-center justify-between rounded-2xl border border-white/[0.06] bg-card p-4 hover:border-primary/50 hover:bg-white/[0.04] transition-all group"
         >
           <div className="flex items-center gap-3">
-            <div className="rounded-lg bg-muted p-2 text-muted-foreground group-hover:text-primary transition-colors">
+            <div className="rounded-lg bg-white/[0.04] p-2 text-muted-foreground group-hover:text-primary transition-colors">
               {link.icon}
             </div>
             <div>
@@ -905,8 +903,8 @@ export default function SettingsPage() {
           {t('settings.configuration')}
         </h2>
         
-        <div className="rounded-2xl border border-border bg-card">
-          <div className="p-4 border-b border-border">
+        <div className="rounded-3xl border border-white/[0.06] bg-card">
+          <div className="p-4 border-b border-white/[0.06]">
             <div className="flex items-center gap-2">
               <Info className="h-4 w-4 text-muted-foreground" />
               <span className="text-sm text-muted-foreground">
@@ -936,7 +934,7 @@ export default function SettingsPage() {
 
         {/* Mock Mode Warning */}
         {useMock && (
-          <div className="mt-4 rounded-xl border border-yellow-500/30 bg-yellow-500/5 p-4 flex items-start gap-3">
+          <div className="mt-4 rounded-2xl border border-yellow-500/30 bg-yellow-500/5 p-4 flex items-start gap-3">
             <div className="rounded-lg bg-yellow-500/10 p-2">
               <Info className="h-4 w-4 text-yellow-500" />
             </div>
@@ -966,7 +964,7 @@ export default function SettingsPage() {
           {t('settings.about')}
         </h2>
         
-        <div className="rounded-2xl border border-border bg-card p-6">
+        <div className="rounded-3xl border border-white/[0.06] bg-card p-6">
           <div className="flex items-center gap-4 mb-4">
             <div className="rounded-xl bg-primary/10 p-3">
               <Zap className="h-6 w-6 text-primary" />
@@ -1001,7 +999,7 @@ export default function SettingsPage() {
       </section>
 
       {/* Footer */}
-      <div className="text-center text-xs text-muted-foreground pt-4 border-t border-border">
+      <div className="text-center text-xs text-muted-foreground pt-4 border-t border-white/[0.06]">
         <p>VectorSurfer Dashboard • Built with 💙 for VectorWave SDK</p>
       </div>
     </div>
