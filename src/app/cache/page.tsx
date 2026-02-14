@@ -18,6 +18,8 @@ import {
   useSimulateDrift,
 } from '@/lib/hooks/useApi';
 import { useTranslation } from '@/lib/i18n';
+import { useDashboardStore } from '@/lib/stores/useDashboardStore';
+import { TimeRangeSelector } from '@/components/ui/TimeRangeSelector';
 import { formatDuration, formatNumber, cn } from '@/lib/utils';
 import type { DriftResult, GoldenCandidate } from '@/lib/types/api';
 
@@ -42,9 +44,9 @@ function KPICard({ label, value, icon, color = 'text-primary' }: KPICardProps) {
 }
 
 // ============ Cache Analytics Section ============
-function CacheAnalyticsSection() {
+function CacheAnalyticsSection({ timeRange }: { timeRange: number }) {
   const { t } = useTranslation();
-  const { data, isLoading } = useCacheAnalytics(0);
+  const { data, isLoading } = useCacheAnalytics(timeRange);
 
   if (isLoading) {
     return (
@@ -281,6 +283,7 @@ function CacheTabSelector({ value, onChange }: { value: CacheTab; onChange: (tab
 export default function CachePage() {
   const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState<CacheTab>('analytics');
+  const { timeRangeMinutes } = useDashboardStore();
 
   return (
     <div className="space-y-6 p-6">
@@ -293,11 +296,14 @@ export default function CachePage() {
           </h1>
           <p className="text-muted-foreground">{t('cache.subtitle')}</p>
         </div>
-        <CacheTabSelector value={activeTab} onChange={setActiveTab} />
+        <div className="flex items-center gap-2">
+          <TimeRangeSelector />
+          <CacheTabSelector value={activeTab} onChange={setActiveTab} />
+        </div>
       </div>
 
       {/* Tab Content */}
-      {activeTab === 'analytics' && <CacheAnalyticsSection />}
+      {activeTab === 'analytics' && <CacheAnalyticsSection timeRange={timeRangeMinutes} />}
       {activeTab === 'drift' && <DriftDetectionSection />}
     </div>
   );
