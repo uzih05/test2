@@ -89,9 +89,9 @@ class DashboardOverviewService:
         """
         try:
             collection = self._get_execution_collection()
-            time_limit = (datetime.now(timezone.utc) - timedelta(minutes=time_range_minutes)).isoformat()
+            time_limit = (datetime.now(timezone.utc) - timedelta(minutes=time_range_minutes))
 
-            # 시간 필터 (timestamp_utc is TEXT/ISO string)
+            # 시간 필터
             time_filter = wvc_query.Filter.by_property("timestamp_utc").greater_or_equal(time_limit)
             
             # 1. 전체 카운트 (Aggregate)
@@ -231,10 +231,10 @@ class DashboardOverviewService:
                 bucket_start = time_limit + timedelta(minutes=i * bucket_size_minutes)
                 bucket_end = bucket_start + timedelta(minutes=bucket_size_minutes)
                 
-                # 버킷 시간 범위 필터 (timestamp_utc is TEXT/ISO string)
+                # 버킷 시간 범위 필터
                 bucket_filter = (
-                    wvc_query.Filter.by_property("timestamp_utc").greater_or_equal(bucket_start.isoformat()) &
-                    wvc_query.Filter.by_property("timestamp_utc").less_than(bucket_end.isoformat())
+                    wvc_query.Filter.by_property("timestamp_utc").greater_or_equal(bucket_start) &
+                    wvc_query.Filter.by_property("timestamp_utc").less_than(bucket_end)
                 )
                 
                 # 상태별 집계
@@ -340,9 +340,9 @@ class DashboardOverviewService:
         """
         try:
             collection = self._get_execution_collection()
-            time_limit = (datetime.now(timezone.utc) - timedelta(minutes=time_range_minutes)).isoformat()
+            time_limit = (datetime.now(timezone.utc) - timedelta(minutes=time_range_minutes))
 
-            # 에러만 필터링 + 시간 필터 (timestamp_utc is TEXT/ISO string)
+            # 에러만 필터링 + 시간 필터
             error_filter = (
                 wvc_query.Filter.by_property("status").equal("ERROR") &
                 wvc_query.Filter.by_property("timestamp_utc").greater_or_equal(time_limit)

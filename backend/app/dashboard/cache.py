@@ -31,10 +31,10 @@ class CacheService:
         try:
             collection = self.client.collections.get(self.settings.EXECUTION_COLLECTION_NAME)
 
-            # Time filter (timestamp_utc is stored as TEXT/ISO string)
+            # Time filter
             time_filter = None
             if time_range_minutes > 0:
-                time_limit = (datetime.now(timezone.utc) - timedelta(minutes=time_range_minutes)).isoformat()
+                time_limit = datetime.now(timezone.utc) - timedelta(minutes=time_range_minutes)
                 time_filter = wvc_query.Filter.by_property("timestamp_utc").greater_or_equal(time_limit)
 
             # Total executions count

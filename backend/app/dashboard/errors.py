@@ -207,9 +207,9 @@ class ErrorService:
         """
         try:
             collection = self._get_execution_collection()
-            time_limit = (datetime.now(timezone.utc) - timedelta(minutes=time_range_minutes)).isoformat()
+            time_limit = (datetime.now(timezone.utc) - timedelta(minutes=time_range_minutes))
 
-            # 기본 필터: ERROR 상태 + 시간 범위 (timestamp_utc is TEXT/ISO string)
+            # 기본 필터: ERROR 상태 + 시간 범위
             base_filter = (
                 wvc_query.Filter.by_property("status").equal("ERROR") &
                 wvc_query.Filter.by_property("timestamp_utc").greater_or_equal(time_limit)
@@ -319,11 +319,11 @@ class ErrorService:
                 bucket_start = time_limit + timedelta(minutes=i * bucket_size_minutes)
                 bucket_end = bucket_start + timedelta(minutes=bucket_size_minutes)
                 
-                # 버킷 필터: ERROR + 시간 범위 (timestamp_utc is TEXT/ISO string)
+                # 버킷 필터: ERROR + 시간 범위
                 bucket_filter = (
                     wvc_query.Filter.by_property("status").equal("ERROR") &
-                    wvc_query.Filter.by_property("timestamp_utc").greater_or_equal(bucket_start.isoformat()) &
-                    wvc_query.Filter.by_property("timestamp_utc").less_than(bucket_end.isoformat())
+                    wvc_query.Filter.by_property("timestamp_utc").greater_or_equal(bucket_start) &
+                    wvc_query.Filter.by_property("timestamp_utc").less_than(bucket_end)
                 )
                 
                 try:
