@@ -29,19 +29,25 @@ export default function SignupPage() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background">
-      <div className="w-full max-w-sm space-y-6 px-4">
+    <div className="relative flex min-h-screen items-center justify-center bg-background overflow-hidden">
+      {/* Purple glow orbs */}
+      <div className="absolute top-1/4 left-1/3 w-[400px] h-[400px] rounded-full bg-primary/15 blur-[120px] pointer-events-none" />
+      <div className="absolute bottom-1/4 right-1/4 w-[300px] h-[300px] rounded-full bg-primary/10 blur-[100px] pointer-events-none" />
+
+      <div className="relative z-10 w-full max-w-sm space-y-8 px-4">
         {/* Logo */}
-        <div className="flex flex-col items-center gap-2">
-          <Waves className="h-10 w-10 text-primary" />
-          <h1 className="text-2xl font-bold">VectorSurfer</h1>
+        <div className="flex flex-col items-center gap-3">
+          <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/20">
+            <Waves className="h-8 w-8 text-primary" />
+          </div>
+          <h1 className="text-3xl font-bold tracking-tight">VectorSurfer</h1>
           <p className="text-sm text-muted-foreground">Create your account</p>
         </div>
 
         {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-4">
           {error && (
-            <div className="rounded-lg border border-red-500/30 bg-red-500/10 p-3 text-sm text-red-400">
+            <div className="rounded-xl border border-red-500/30 bg-red-500/10 p-3 text-sm text-red-400">
               {error}
               <button type="button" onClick={clearError} className="ml-2 underline">
                 dismiss
@@ -55,7 +61,7 @@ export default function SignupPage() {
               type="text"
               value={displayName}
               onChange={(e) => setDisplayName(e.target.value)}
-              className="w-full rounded-lg border border-border bg-card px-3 py-2 text-sm focus:border-primary focus:outline-none"
+              className="w-full rounded-xl border border-border bg-card px-4 py-2.5 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary transition-colors"
               placeholder="Your name (optional)"
             />
           </div>
@@ -67,7 +73,7 @@ export default function SignupPage() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="w-full rounded-lg border border-border bg-card px-3 py-2 text-sm focus:border-primary focus:outline-none"
+              className="w-full rounded-xl border border-border bg-card px-4 py-2.5 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary transition-colors"
               placeholder="you@example.com"
             />
           </div>
@@ -80,7 +86,7 @@ export default function SignupPage() {
               onChange={(e) => setPassword(e.target.value)}
               required
               minLength={6}
-              className="w-full rounded-lg border border-border bg-card px-3 py-2 text-sm focus:border-primary focus:outline-none"
+              className="w-full rounded-xl border border-border bg-card px-4 py-2.5 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary transition-colors"
               placeholder="Min 6 characters"
             />
           </div>
@@ -88,7 +94,7 @@ export default function SignupPage() {
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full flex items-center justify-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-white hover:bg-primary/90 disabled:opacity-50 transition-colors"
+            className="w-full flex items-center justify-center gap-2 rounded-full bg-primary px-4 py-2.5 text-sm font-semibold text-white hover:brightness-110 disabled:opacity-50 transition-all"
           >
             <UserPlus className="h-4 w-4" />
             {isLoading ? 'Creating account...' : 'Create Account'}
@@ -97,7 +103,7 @@ export default function SignupPage() {
 
         <p className="text-center text-sm text-muted-foreground">
           Already have an account?{' '}
-          <Link href="/login" className="text-primary hover:underline">
+          <Link href="/login" className="text-primary hover:underline font-medium">
             Sign in
           </Link>
         </p>

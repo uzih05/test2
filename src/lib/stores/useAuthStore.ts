@@ -43,6 +43,9 @@ export const useAuthStore = create<AuthState>()(
             isAuthenticated: true,
             isLoading: false,
           });
+          // Fetch full user profile (includes has_openai_key)
+          const fullUser = await authService.getMe(res.access_token);
+          set({ user: fullUser });
         } catch (e: any) {
           set({ isLoading: false, error: e.message });
           throw e;
@@ -60,6 +63,9 @@ export const useAuthStore = create<AuthState>()(
             isAuthenticated: true,
             isLoading: false,
           });
+          // Fetch full user profile (includes has_openai_key)
+          const fullUser = await authService.getMe(res.access_token);
+          set({ user: fullUser });
         } catch (e: any) {
           set({ isLoading: false, error: e.message });
           throw e;

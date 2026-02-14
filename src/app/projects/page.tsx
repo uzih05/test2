@@ -162,12 +162,18 @@ export default function ProjectsPage() {
   }
 
   return (
-    <div className="flex min-h-screen flex-col bg-background">
+    <div className="relative flex min-h-screen flex-col bg-background overflow-hidden">
+      {/* Purple glow orbs */}
+      <div className="absolute top-0 left-1/4 w-[500px] h-[500px] rounded-full bg-primary/10 blur-[150px] pointer-events-none" />
+      <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] rounded-full bg-primary/8 blur-[120px] pointer-events-none" />
+
       {/* Header */}
-      <header className="flex items-center justify-between border-b border-border px-8 py-4">
-        <div className="flex items-center gap-2">
-          <Waves className="h-6 w-6 text-primary" />
-          <span className="text-lg font-bold">VectorSurfer</span>
+      <header className="relative z-10 flex items-center justify-between border-b border-border px-8 py-4">
+        <div className="flex items-center gap-3">
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/20">
+            <Waves className="h-5 w-5 text-primary" />
+          </div>
+          <span className="text-lg font-bold tracking-tight">VectorSurfer</span>
         </div>
         <div className="flex items-center gap-4">
           <LanguageSwitcher />
@@ -184,7 +190,7 @@ export default function ProjectsPage() {
 
       {/* Main */}
       <main className={cn(
-        'flex-1 flex flex-col items-center px-6',
+        'relative z-10 flex-1 flex flex-col items-center px-6',
         connections.length > 0 ? 'py-8' : 'py-12'
       )}>
         <div className={cn(

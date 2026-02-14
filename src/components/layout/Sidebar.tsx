@@ -109,9 +109,11 @@ export function Sidebar() {
   const SidebarContent = () => (
     <>
       {/* Logo */}
-      <div className="flex h-16 items-center gap-2 border-b border-border px-6">
-        <Waves className="h-6 w-6 text-primary" />
-        <span className="text-lg font-bold">VectorSurfer</span>
+      <div className="flex h-16 items-center gap-3 border-b border-border px-6">
+        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/20">
+          <Waves className="h-5 w-5 text-primary" />
+        </div>
+        <span className="text-lg font-bold tracking-tight">VectorSurfer</span>
       </div>
 
       {/* Navigation */}

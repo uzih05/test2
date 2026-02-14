@@ -1,10 +1,10 @@
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
+import { Space_Grotesk } from 'next/font/google';
 import './globals.css';
 import { Providers } from '@/lib/providers';
 import { AppShell } from '@/components/layout/AppShell';
 
-const inter = Inter({ subsets: ['latin'] });
+const spaceGrotesk = Space_Grotesk({ subsets: ['latin'], weight: ['400', '500', '600', '700'] });
 
 export const metadata: Metadata = {
   title: 'VectorSurfer - Application Observability',
@@ -18,7 +18,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ko" className="dark">
-      <body className={inter.className}>
+      <body className={spaceGrotesk.className}>
         <Providers>
           <AppShell>{children}</AppShell>
         </Providers>
