@@ -25,6 +25,7 @@ import {
   LogOut,
   User,
   FolderOpen,
+  Star,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useTranslation } from '@/lib/i18n';
@@ -38,6 +39,7 @@ const navigation = [
   { key: 'errors', href: '/errors', icon: AlertTriangle },
   { key: 'healer', href: '/healer', icon: Sparkles },
   { key: 'cache', href: '/cache', icon: Database },
+  { key: 'golden', href: '/golden', icon: Star },
   { key: 'github', href: '/github', icon: GitPullRequest },
 ];
 

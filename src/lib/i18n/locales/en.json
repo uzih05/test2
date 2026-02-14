@@ -24,6 +24,7 @@
         "cache": "Cache",
         "settings": "Settings",
         "projects": "Projects",
+        "golden": "Golden Dataset",
         "github": "GitHub"
     },
     "dashboard": {
@@ -290,6 +291,7 @@
         "goldenHits": "Golden Hits",
         "standardHits": "Standard Hits",
         "goldenDataset": "Golden Dataset",
+        "goldenSubtitle": "Manage golden dataset records per function",
         "register": "Register",
         "delete": "Delete",
         "recommend": "Recommend Candidates",

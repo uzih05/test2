@@ -6,26 +6,17 @@ import {
   Zap,
   Clock,
   Star,
-  Trash2,
-  Plus,
-  Search,
   AlertTriangle,
   CheckCircle,
   XCircle,
   Loader2,
-  ChevronDown,
   Activity,
-  X,
 } from 'lucide-react';
 import {
   useCacheAnalytics,
-  useGoldenList,
   useDriftSummary,
-  useRegisterGolden,
-  useDeleteGolden,
   useSimulateDrift,
 } from '@/lib/hooks/useApi';
-import { cacheService } from '@/lib/services/cache';
 import { useTranslation } from '@/lib/i18n';
 import { formatDuration, formatNumber, cn } from '@/lib/utils';
 import type { DriftResult, GoldenCandidate } from '@/lib/types/api';
@@ -106,247 +97,6 @@ function CacheAnalyticsSection() {
           color="text-yellow-500"
         />
       </div>
-    </div>
-  );
-}
-
-// ============ Register Modal ============
-interface RegisterModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  onSuccess: () => void;
-}
-
-function RegisterModal({ isOpen, onClose, onSuccess }: RegisterModalProps) {
-  const { t } = useTranslation();
-  const [uuid, setUuid] = useState('');
-  const [note, setNote] = useState('');
-  const [tags, setTags] = useState('');
-  const registerMutation = useRegisterGolden();
-
-  if (!isOpen) return null;
-
-  const handleSubmit = async () => {
-    if (!uuid.trim()) return;
-    try {
-      await registerMutation.mutateAsync({
-        execution_uuid: uuid.trim(),
-        note: note.trim(),
-        tags: tags.split(',').map(t => t.trim()).filter(Boolean),
-      });
-      setUuid('');
-      setNote('');
-      setTags('');
-      onSuccess();
-      onClose();
-    } catch (e) {
-      console.error('Register failed:', e);
-    }
-  };
-
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
-      <div className="w-full max-w-md rounded-2xl border border-border bg-card p-6 shadow-2xl">
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="font-semibold">{t('cache.registerGolden')}</h3>
-          <button onClick={onClose} className="p-1 rounded hover:bg-muted">
-            <X className="h-4 w-4" />
-          </button>
-        </div>
-
-        <div className="space-y-3">
-          <div>
-            <label className="block text-sm font-medium mb-1">{t('cache.executionUuid')}</label>
-            <input
-              type="text"
-              value={uuid}
-              onChange={(e) => setUuid(e.target.value)}
-              placeholder="execution-uuid-here"
-              className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm focus:border-primary focus:outline-none"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium mb-1">{t('cache.note')}</label>
-            <input
-              type="text"
-              value={note}
-              onChange={(e) => setNote(e.target.value)}
-              placeholder="Optional note..."
-              className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm focus:border-primary focus:outline-none"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium mb-1">{t('cache.tags')}</label>
-            <input
-              type="text"
-              value={tags}
-              onChange={(e) => setTags(e.target.value)}
-              placeholder="tag1, tag2, tag3"
-              className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm focus:border-primary focus:outline-none"
-            />
-          </div>
-        </div>
-
-        <div className="flex gap-2 mt-4">
-          <button
-            onClick={onClose}
-            className="flex-1 rounded-lg border border-border px-4 py-2 text-sm hover:bg-muted transition-colors"
-          >
-            {t('common.cancel')}
-          </button>
-          <button
-            onClick={handleSubmit}
-            disabled={!uuid.trim() || registerMutation.isPending}
-            className="flex-1 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 disabled:opacity-50 transition-colors"
-          >
-            {registerMutation.isPending ? (
-              <Loader2 className="h-4 w-4 animate-spin mx-auto" />
-            ) : (
-              t('cache.register')
-            )}
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-// ============ Golden Dataset Section (Function-based) ============
-function GoldenDatasetSection() {
-  const { t } = useTranslation();
-  const [showModal, setShowModal] = useState(false);
-  const [expandedFn, setExpandedFn] = useState<string | null>(null);
-  const [searchQuery, setSearchQuery] = useState('');
-
-  const { data, isLoading, refetch } = useGoldenList(undefined, 200);
-  const deleteMutation = useDeleteGolden();
-
-  // Group golden records by function_name
-  const functionGroups = (() => {
-    const items = data?.items || [];
-    const groups = new Map<string, typeof items>();
-    for (const item of items) {
-      const list = groups.get(item.function_name) || [];
-      list.push(item);
-      groups.set(item.function_name, list);
-    }
-    return Array.from(groups.entries())
-      .map(([name, records]) => ({ name, records, count: records.length }))
-      .filter(g => !searchQuery || g.name.toLowerCase().includes(searchQuery.toLowerCase()))
-      .sort((a, b) => b.count - a.count);
-  })();
-
-  const handleDelete = async (uuid: string) => {
-    try {
-      await deleteMutation.mutateAsync(uuid);
-      refetch();
-    } catch (e) {
-      console.error('Delete failed:', e);
-    }
-  };
-
-  return (
-    <div className="rounded-2xl border border-border bg-card p-6">
-      <div className="flex items-center justify-between mb-4">
-        <h2 className="text-lg font-semibold flex items-center gap-2">
-          <Star className="h-5 w-5 text-yellow-500" />
-          {t('cache.goldenDataset')}
-        </h2>
-        <button
-          onClick={() => setShowModal(true)}
-          className="flex items-center gap-1 rounded-lg bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground hover:bg-primary/90 transition-colors"
-        >
-          <Plus className="h-3 w-3" />
-          {t('cache.register')}
-        </button>
-      </div>
-
-      {/* Search */}
-      <div className="relative mb-4">
-        <Search className="absolute left-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground" />
-        <input
-          type="text"
-          placeholder={t('cache.functionName')}
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          className="w-full rounded-lg border border-border bg-background py-2 pl-9 pr-3 text-sm focus:border-primary focus:outline-none"
-        />
-      </div>
-
-      {/* Function List */}
-      {isLoading ? (
-        <div className="space-y-2">
-          {Array.from({ length: 3 }).map((_, i) => (
-            <div key={i} className="h-12 animate-pulse rounded-lg bg-muted" />
-          ))}
-        </div>
-      ) : functionGroups.length === 0 ? (
-        <div className="py-8 text-center text-sm text-muted-foreground">
-          {t('cache.noGoldenData')}
-        </div>
-      ) : (
-        <div className="space-y-1 max-h-[400px] overflow-auto">
-          {functionGroups.map((group) => (
-            <div key={group.name}>
-              {/* Function Row */}
-              <button
-                onClick={() => setExpandedFn(expandedFn === group.name ? null : group.name)}
-                className={cn(
-                  'w-full flex items-center justify-between rounded-lg px-3 py-2.5 text-left transition-colors',
-                  expandedFn === group.name ? 'bg-primary/10' : 'hover:bg-muted/50'
-                )}
-              >
-                <div className="flex items-center gap-2 min-w-0">
-                  <ChevronDown className={cn(
-                    'h-3.5 w-3.5 text-muted-foreground transition-transform shrink-0',
-                    expandedFn === group.name && 'rotate-180'
-                  )} />
-                  <code className="text-sm font-medium truncate">{group.name}</code>
-                </div>
-                <span className="rounded-full bg-muted px-2 py-0.5 text-xs text-muted-foreground shrink-0">
-                  {group.count}
-                </span>
-              </button>
-
-              {/* Expanded: Golden Records for this function */}
-              {expandedFn === group.name && (
-                <div className="ml-6 mr-2 mb-2 space-y-1.5 mt-1">
-                  {group.records.map((item) => (
-                    <div key={item.uuid} className="flex items-center justify-between rounded-lg border border-border bg-muted/20 px-3 py-2">
-                      <div className="flex items-center gap-3 min-w-0">
-                        <Star className="h-3 w-3 text-yellow-500 shrink-0" />
-                        <code className="text-xs text-muted-foreground">{item.uuid.slice(0, 12)}...</code>
-                        {item.note && <span className="text-xs text-muted-foreground truncate">{item.note}</span>}
-                        {item.tags?.map((tag) => (
-                          <span key={tag} className="rounded bg-muted px-1.5 py-0.5 text-xs">{tag}</span>
-                        ))}
-                      </div>
-                      <button
-                        onClick={(e) => { e.stopPropagation(); handleDelete(item.uuid); }}
-                        disabled={deleteMutation.isPending}
-                        className="p-1 rounded hover:bg-red-500/10 text-muted-foreground hover:text-red-500 transition-colors shrink-0"
-                      >
-                        <Trash2 className="h-3.5 w-3.5" />
-                      </button>
-                    </div>
-                  ))}
-
-                  {/* Link to executions for this function */}
-                  <a
-                    href={`/executions?function_name=${encodeURIComponent(group.name)}`}
-                    className="flex items-center gap-1.5 rounded-lg border border-dashed border-border px-3 py-2 text-xs text-muted-foreground hover:text-primary hover:border-primary/50 transition-colors"
-                  >
-                    <Plus className="h-3 w-3" />
-                    {t('cache.viewExecutions')}
-                  </a>
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
-      )}
-
-      <RegisterModal isOpen={showModal} onClose={() => setShowModal(false)} onSuccess={() => refetch()} />
     </div>
   );
 }
@@ -497,14 +247,13 @@ function DriftDetectionSection() {
 }
 
 // ============ Tab Navigation ============
-type CacheTab = 'analytics' | 'golden' | 'drift';
+type CacheTab = 'analytics' | 'drift';
 
 function CacheTabSelector({ value, onChange }: { value: CacheTab; onChange: (tab: CacheTab) => void }) {
   const { t } = useTranslation();
 
   const tabs: { key: CacheTab; label: string }[] = [
     { key: 'analytics', label: t('cache.analyticsTab') },
-    { key: 'golden', label: t('cache.goldenTab') },
     { key: 'drift', label: t('cache.driftTab') },
   ];
 
@@ -549,7 +298,6 @@ export default function CachePage() {
 
       {/* Tab Content */}
       {activeTab === 'analytics' && <CacheAnalyticsSection />}
-      {activeTab === 'golden' && <GoldenDatasetSection />}
       {activeTab === 'drift' && <DriftDetectionSection />}
     </div>
   );

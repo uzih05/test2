@@ -24,6 +24,7 @@
         "cache": "キャッシュ",
         "settings": "設定",
         "projects": "プロジェクト",
+        "golden": "ゴールデンデータセット",
         "github": "GitHub"
     },
     "dashboard": {
@@ -290,6 +291,7 @@
         "goldenHits": "ゴールデンヒット",
         "standardHits": "標準ヒット",
         "goldenDataset": "ゴールデンデータセット",
+        "goldenSubtitle": "関数別ゴールデンデータセット管理",
         "register": "登録",
         "delete": "削除",
         "recommend": "候補を推薦",
