@@ -1,0 +1,90 @@
+/**
+ * KPI Card Component
+ */
+
+'use client';
+
+import { cn } from '@/lib/utils';
+import { TrendingUp, TrendingDown, Minus } from 'lucide-react';
+
+interface KPICardProps {
+  title: string;
+  value: string | number;
+  subtitle?: string;
+  trend?: {
+    value: number;
+    label?: string;
+  };
+  icon?: React.ReactNode;
+  variant?: 'default' | 'success' | 'warning' | 'error';
+  className?: string;
+}
+
+export function KPICard({
+  title,
+  value,
+  subtitle,
+  trend,
+  icon,
+  variant = 'default',
+  className,
+}: KPICardProps) {
+  const variantStyles = {
+    default: 'border-border',
+    success: 'border-green-500/30 bg-green-500/5',
+    warning: 'border-yellow-500/30 bg-yellow-500/5',
+    error: 'border-red-500/30 bg-red-500/5',
+  };
+
+  const getTrendIcon = () => {
+    if (!trend) return null;
+    if (trend.value > 0) return <TrendingUp className="h-3 w-3" />;
+    if (trend.value < 0) return <TrendingDown className="h-3 w-3" />;
+    return <Minus className="h-3 w-3" />;
+  };
+
+  const getTrendColor = () => {
+    if (!trend) return '';
+    if (trend.value > 0) return 'text-green-500';
+    if (trend.value < 0) return 'text-red-500';
+    return 'text-muted-foreground';
+  };
+
+  return (
+    <div
+      className={cn(
+        'rounded-xl border bg-card p-4 shadow-sm transition-all hover:shadow-md',
+        variantStyles[variant],
+        className
+      )}
+    >
+      <div className="flex items-start justify-between">
+        <div className="space-y-1">
+          <p className="text-sm font-medium text-muted-foreground">{title}</p>
+          <p className="text-2xl font-bold tracking-tight">{value}</p>
+          {subtitle && (
+            <p className="text-xs text-muted-foreground">{subtitle}</p>
+          )}
+        </div>
+        {icon && (
+          <div className="rounded-lg bg-muted p-2 text-muted-foreground">
+            {icon}
+          </div>
+        )}
+      </div>
+
+      {trend && (
+        <div className={cn('mt-3 flex items-center gap-1 text-xs', getTrendColor())}>
+          {getTrendIcon()}
+          <span className="font-medium">
+            {trend.value > 0 ? '+' : ''}
+            {trend.value}%
+          </span>
+          {trend.label && (
+            <span className="text-muted-foreground">{trend.label}</span>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
