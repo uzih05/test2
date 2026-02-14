@@ -153,19 +153,19 @@ function FunctionDetailView({ functionName, onBack }: { functionName: string; on
   const total = execData?.total || 0;
   const totalPages = Math.ceil(total / PAGE_SIZE);
 
-  // Set of golden UUIDs for this function
-  const goldenUuids = useMemo(() => {
+  // Set of original execution UUIDs that are registered as golden
+  const goldenOriginalUuids = useMemo(() => {
     const set = new Set<string>();
     for (const item of goldenData?.items || []) {
-      set.add(item.original_uuid || item.uuid);
+      if (item.original_uuid) set.add(item.original_uuid);
     }
     return set;
   }, [goldenData]);
 
-  const handleRegister = async (spanId: string) => {
+  const handleRegister = async (executionUuid: string) => {
     try {
       await registerMutation.mutateAsync({
-        execution_uuid: spanId,
+        execution_uuid: executionUuid,
         note: '',
         tags: [],
       });
@@ -175,18 +175,18 @@ function FunctionDetailView({ functionName, onBack }: { functionName: string; on
     }
   };
 
-  const handleUnregister = async (uuid: string) => {
+  const handleUnregister = async (goldenUuid: string) => {
     try {
-      await deleteMutation.mutateAsync(uuid);
+      await deleteMutation.mutateAsync(goldenUuid);
       refetchGolden();
     } catch (e) {
       console.error('Delete failed:', e);
     }
   };
 
-  // Find golden record UUID by original execution UUID
-  const findGoldenUuid = (spanId: string): string | undefined => {
-    return goldenData?.items?.find((g) => g.original_uuid === spanId || g.uuid === spanId)?.uuid;
+  // Find golden record's own UUID by the original execution UUID
+  const findGoldenUuid = (executionUuid: string): string | undefined => {
+    return goldenData?.items?.find((g) => g.original_uuid === executionUuid)?.uuid;
   };
 
   return (
@@ -235,9 +235,9 @@ function FunctionDetailView({ functionName, onBack }: { functionName: string; on
               </tr>
             ) : (
               executions.map((exec) => {
-                const isGolden = goldenUuids.has(exec.span_id);
+                const isGolden = goldenOriginalUuids.has(exec.uuid);
                 return (
-                  <tr key={exec.span_id} className="hover:bg-muted/30 transition-colors">
+                  <tr key={exec.uuid} className="hover:bg-muted/30 transition-colors">
                     <td className="px-4 py-3">
                       <StatusBadge status={exec.status} size="sm" />
                     </td>
@@ -254,7 +254,7 @@ function FunctionDetailView({ functionName, onBack }: { functionName: string; on
                       {isGolden ? (
                         <button
                           onClick={() => {
-                            const gUuid = findGoldenUuid(exec.span_id);
+                            const gUuid = findGoldenUuid(exec.uuid);
                             if (gUuid) handleUnregister(gUuid);
                           }}
                           disabled={deleteMutation.isPending}
@@ -265,7 +265,7 @@ function FunctionDetailView({ functionName, onBack }: { functionName: string; on
                         </button>
                       ) : (
                         <button
-                          onClick={() => handleRegister(exec.span_id)}
+                          onClick={() => handleRegister(exec.uuid)}
                           disabled={registerMutation.isPending}
                           className="inline-flex items-center gap-1 rounded-full border border-border px-2.5 py-1 text-xs text-muted-foreground hover:border-yellow-500/50 hover:text-yellow-500 transition-colors"
                         >

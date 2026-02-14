@@ -76,6 +76,7 @@ export const mockErrorDistribution: DistributionItem[] = [
 // ============ Executions ============
 export const mockExecutions: Execution[] = [
   {
+    uuid: 'mock-uuid-001',
     span_id: 'span-001',
     trace_id: 'trace-abc-123',
     function_name: 'process_payment',
@@ -87,6 +88,7 @@ export const mockExecutions: Execution[] = [
     output_preview: '{"status": "completed", "tx_id": "tx-789"}',
   },
   {
+    uuid: 'mock-uuid-002',
     span_id: 'span-002',
     trace_id: 'trace-abc-124',
     function_name: 'validate_user',
@@ -98,6 +100,7 @@ export const mockExecutions: Execution[] = [
     error_message: 'Invalid email format',
   },
   {
+    uuid: 'mock-uuid-003',
     span_id: 'span-003',
     trace_id: 'trace-abc-125',
     function_name: 'fetch_inventory',
@@ -109,6 +112,7 @@ export const mockExecutions: Execution[] = [
     output_preview: '{"quantity": 42, "cached": true}',
   },
   {
+    uuid: 'mock-uuid-004',
     span_id: 'span-004',
     trace_id: 'trace-abc-126',
     function_name: 'send_notification',
@@ -118,6 +122,7 @@ export const mockExecutions: Execution[] = [
     team: 'notifications',
   },
   {
+    uuid: 'mock-uuid-005',
     span_id: 'span-005',
     trace_id: 'trace-abc-127',
     function_name: 'calculate_shipping',

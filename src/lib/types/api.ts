@@ -47,6 +47,7 @@ export interface DistributionItem {
 
 // ============ Executions ============
 export interface Execution {
+  uuid: string;
   span_id: string;
   trace_id: string;
   function_name: string;

@@ -430,7 +430,19 @@ def register_golden(client: weaviate.WeaviateClient,
     if exec_obj is None:
         raise ValueError(f"Execution {execution_uuid} not found")
 
-    props = dict(exec_obj.properties)
+    # Allowed golden properties (must match collection schema)
+    GOLDEN_TEXT_PROPS = {
+        "function_name", "original_uuid", "note", "registered_at",
+        "status", "timestamp_utc", "span_id", "trace_id",
+        "team", "error_code", "error_message", "input_preview", "output_preview",
+    }
+    GOLDEN_NUMBER_PROPS = {"duration_ms"}
+    GOLDEN_ARRAY_PROPS = {"tags"}
+    GOLDEN_ALL_PROPS = GOLDEN_TEXT_PROPS | GOLDEN_NUMBER_PROPS | GOLDEN_ARRAY_PROPS
+
+    # Filter to only known properties
+    raw_props = dict(exec_obj.properties)
+    props = {k: v for k, v in raw_props.items() if k in GOLDEN_ALL_PROPS}
     props["original_uuid"] = execution_uuid
     props["note"] = note
     props["tags"] = tags or []
