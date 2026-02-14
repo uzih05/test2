@@ -44,7 +44,7 @@ function KPICard({ label, value, icon, color = 'text-primary' }: KPICardProps) {
 // ============ Cache Analytics Section ============
 function CacheAnalyticsSection() {
   const { t } = useTranslation();
-  const { data, isLoading } = useCacheAnalytics(60);
+  const { data, isLoading } = useCacheAnalytics(0);
 
   if (isLoading) {
     return (
