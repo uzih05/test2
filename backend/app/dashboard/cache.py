@@ -63,20 +63,17 @@ class CacheService:
             # Cache hit rate
             cache_hit_rate = round(cache_hit_count / total_count * 100, 2) if total_count > 0 else 0.0
 
-            # Golden vs Standard: check if is_golden_source property exists
+            # Golden dataset count from dedicated collection
             golden_hit_count = 0
-            standard_hit_count = cache_hit_count
             try:
-                golden_filter = cache_filter & wvc_query.Filter.by_property("is_golden_source").equal(True)
-                golden_result = collection.aggregate.over_all(
-                    filters=golden_filter,
-                    total_count=True,
-                )
-                golden_hit_count = golden_result.total_count or 0
-                standard_hit_count = cache_hit_count - golden_hit_count
-            except Exception:
-                # is_golden_source property may not exist
-                pass
+                golden_cname = self.settings.GOLDEN_COLLECTION_NAME
+                if self.client.collections.exists(golden_cname):
+                    golden_col = self.client.collections.get(golden_cname)
+                    golden_agg = golden_col.aggregate.over_all(total_count=True)
+                    golden_hit_count = golden_agg.total_count or 0
+            except Exception as e:
+                logger.warning(f"Golden dataset count failed: {e}")
+            standard_hit_count = max(0, cache_hit_count - golden_hit_count)
 
             golden_ratio = round(golden_hit_count / cache_hit_count * 100, 2) if cache_hit_count > 0 else 0.0
 
@@ -93,6 +90,7 @@ class CacheService:
                 "time_saved_ms": time_saved_ms,
                 "avg_cached_duration_ms": round(avg_duration, 2),
                 "time_range_minutes": time_range_minutes,
+                "has_data": total_count > 0,
             }
 
         except Exception as e:

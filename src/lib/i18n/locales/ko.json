@@ -161,7 +161,13 @@
         "docstring": "문서",
         "sourceCode": "소스 코드",
         "viewExecutions": "실행 보기",
-        "viewErrors": "오류 보기"
+        "viewErrors": "오류 보기",
+        "gridView": "그리드",
+        "treeView": "트리",
+        "sortBy": "정렬",
+        "execCount": "실행 수",
+        "name": "이름",
+        "functionsCount": "함수"
     },
     "errors": {
         "title": "오류",
@@ -310,7 +316,11 @@
         "simulate": "시뮬레이션",
         "isDrift": "드리프트 감지됨",
         "noDrift": "드리프트 없음",
-        "viewExecutions": "실행 목록에서 등록하기"
+        "viewExecutions": "실행 목록에서 등록하기",
+        "analyticsTab": "분석",
+        "goldenTab": "골든 데이터셋",
+        "driftTab": "드리프트 감지",
+        "noExecutionData": "아직 실행 데이터가 없습니다"
     },
     "healer": {
         "title": "힐러",
@@ -374,6 +384,11 @@
         "merged": "병합됨",
         "draft": "초안",
         "all": "전체",
-        "by": "작성자"
+        "by": "작성자",
+        "changedFiles": "변경된 파일",
+        "additions": "추가",
+        "deletions": "삭제",
+        "noBody": "설명 없음",
+        "loading": "로딩 중..."
     }
 }

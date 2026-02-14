@@ -21,9 +21,13 @@ import {
     GitMerge,
     XCircle,
     Users,
+    Loader2,
+    FileDiff,
+    Plus,
+    Minus,
 } from 'lucide-react';
 import { useQuery, useQueryClient, useMutation } from '@tanstack/react-query';
-import { githubService, GitHubRepo, GitHubPR } from '@/lib/services/github';
+import { githubService, GitHubRepo, GitHubPR, GitHubPRDetail } from '@/lib/services/github';
 import { useTranslation } from '@/lib/i18n';
 import { cn } from '@/lib/utils';
 
@@ -273,10 +277,70 @@ function RepoSelector({
     );
 }
 
+// ============ PR Detail Panel ============
+function PRDetailPanel({ owner, repo, number }: { owner: string; repo: string; number: number }) {
+    const { t } = useTranslation();
+    const { data, isLoading } = useQuery({
+        queryKey: ['github-pr-detail', owner, repo, number],
+        queryFn: () => githubService.getPullDetail(owner, repo, number),
+        retry: false,
+    });
+
+    if (isLoading) {
+        return (
+            <div className="flex items-center gap-2 py-3 px-4 text-xs text-muted-foreground">
+                <Loader2 className="h-3 w-3 animate-spin" />
+                {t('github.loading')}
+            </div>
+        );
+    }
+
+    if (!data) return null;
+
+    return (
+        <div className="px-4 pb-3 space-y-2">
+            {/* Stats */}
+            <div className="flex items-center gap-4 text-xs">
+                <span className="flex items-center gap-1 text-muted-foreground">
+                    <FileDiff className="h-3 w-3" />
+                    {data.changed_files} {t('github.changedFiles')}
+                </span>
+                <span className="flex items-center gap-1 text-green-600">
+                    <Plus className="h-3 w-3" />
+                    {data.additions}
+                </span>
+                <span className="flex items-center gap-1 text-red-500">
+                    <Minus className="h-3 w-3" />
+                    {data.deletions}
+                </span>
+            </div>
+
+            {/* Full body */}
+            {data.body ? (
+                <p className="text-xs text-muted-foreground whitespace-pre-wrap line-clamp-6 bg-muted/50 rounded-lg p-3">
+                    {data.body}
+                </p>
+            ) : (
+                <p className="text-xs text-muted-foreground italic">{t('github.noBody')}</p>
+            )}
+
+            <a
+                href={data.html_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1 text-xs text-primary hover:underline"
+            >
+                GitHub <ExternalLink className="h-3 w-3" />
+            </a>
+        </div>
+    );
+}
+
 // ============ PR List ============
 function PRList({ owner, repo }: { owner: string; repo: string }) {
     const { t } = useTranslation();
     const [stateFilter, setStateFilter] = useState('all');
+    const [expandedPR, setExpandedPR] = useState<number | null>(null);
 
     const { data: pullsData, isLoading, refetch } = useQuery({
         queryKey: ['github-pulls', owner, repo, stateFilter],
@@ -292,8 +356,6 @@ function PRList({ owner, repo }: { owner: string; repo: string }) {
         { key: 'open', label: t('github.open') },
         { key: 'closed', label: t('github.closed') },
     ];
-
-    const filteredPulls = pulls;
 
     return (
         <div className="space-y-4">
@@ -330,79 +392,94 @@ function PRList({ owner, repo }: { owner: string; repo: string }) {
                 <div className="text-center py-12 text-muted-foreground">
                     {t('common.loading')}
                 </div>
-            ) : filteredPulls.length === 0 ? (
+            ) : pulls.length === 0 ? (
                 <div className="text-center py-12 text-muted-foreground">
                     {t('github.noPulls')}
                 </div>
             ) : (
                 <div className="space-y-2">
-                    {filteredPulls.map((pr) => (
-                        <a
+                    {pulls.map((pr) => (
+                        <div
                             key={pr.number}
-                            href={pr.html_url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="flex items-start gap-3 p-4 rounded-xl border border-border bg-card transition-colors hover:bg-muted/50 group"
+                            className="rounded-xl border border-border bg-card overflow-hidden"
                         >
-                            {/* Status Icon */}
-                            <div className="pt-0.5 shrink-0">
-                                <PRStatusBadge state={pr.state} draft={pr.draft} />
-                            </div>
-
-                            {/* Content */}
-                            <div className="flex-1 min-w-0 space-y-1.5">
-                                <div className="flex items-center gap-2">
-                                    <span className="text-xs text-muted-foreground font-mono">
-                                        #{pr.number}
-                                    </span>
-                                    <h3 className="text-sm font-medium truncate group-hover:text-primary transition-colors">
-                                        {pr.title}
-                                    </h3>
+                            <button
+                                onClick={() => setExpandedPR(expandedPR === pr.number ? null : pr.number)}
+                                className="w-full flex items-start gap-3 p-4 transition-colors hover:bg-muted/50 text-left"
+                            >
+                                {/* Status Icon */}
+                                <div className="pt-0.5 shrink-0">
+                                    <PRStatusBadge state={pr.state} draft={pr.draft} />
                                 </div>
 
-                                <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
-                                    {/* Author */}
-                                    <span>{t('github.by')} @{pr.author}</span>
+                                {/* Content */}
+                                <div className="flex-1 min-w-0 space-y-1.5">
+                                    <div className="flex items-center gap-2">
+                                        <span className="text-xs text-muted-foreground font-mono">
+                                            #{pr.number}
+                                        </span>
+                                        <h3 className="text-sm font-medium truncate">
+                                            {pr.title}
+                                        </h3>
+                                    </div>
 
-                                    {/* Time */}
-                                    <span>&middot;</span>
-                                    <span>{timeAgo(pr.updated_at)}</span>
+                                    {/* Body preview */}
+                                    {pr.body && (
+                                        <p className="text-xs text-muted-foreground line-clamp-2">
+                                            {pr.body.slice(0, 200)}
+                                        </p>
+                                    )}
 
-                                    {/* Reviewers */}
-                                    {pr.reviewers.length > 0 && (
-                                        <>
-                                            <span>&middot;</span>
-                                            <span className="inline-flex items-center gap-1">
-                                                <Users className="h-3 w-3" />
-                                                {pr.reviewers.join(', ')}
-                                            </span>
-                                        </>
+                                    <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
+                                        <span>{t('github.by')} @{pr.author}</span>
+                                        <span>&middot;</span>
+                                        <span>{timeAgo(pr.updated_at)}</span>
+
+                                        {pr.reviewers.length > 0 && (
+                                            <>
+                                                <span>&middot;</span>
+                                                <span className="inline-flex items-center gap-1">
+                                                    <Users className="h-3 w-3" />
+                                                    {pr.reviewers.join(', ')}
+                                                </span>
+                                            </>
+                                        )}
+                                    </div>
+
+                                    {/* Labels */}
+                                    {pr.labels.length > 0 && (
+                                        <div className="flex flex-wrap gap-1">
+                                            {pr.labels.map((label) => (
+                                                <span
+                                                    key={label.name}
+                                                    className="px-2 py-0.5 rounded-full text-[10px] font-medium"
+                                                    style={{
+                                                        backgroundColor: `#${label.color}20`,
+                                                        color: `#${label.color}`,
+                                                        border: `1px solid #${label.color}40`,
+                                                    }}
+                                                >
+                                                    {label.name}
+                                                </span>
+                                            ))}
+                                        </div>
                                     )}
                                 </div>
 
-                                {/* Labels */}
-                                {pr.labels.length > 0 && (
-                                    <div className="flex flex-wrap gap-1">
-                                        {pr.labels.map((label) => (
-                                            <span
-                                                key={label.name}
-                                                className="px-2 py-0.5 rounded-full text-[10px] font-medium"
-                                                style={{
-                                                    backgroundColor: `#${label.color}20`,
-                                                    color: `#${label.color}`,
-                                                    border: `1px solid #${label.color}40`,
-                                                }}
-                                            >
-                                                {label.name}
-                                            </span>
-                                        ))}
-                                    </div>
-                                )}
-                            </div>
+                                {/* Expand indicator */}
+                                <ChevronDown className={cn(
+                                    'h-4 w-4 text-muted-foreground transition-transform shrink-0 mt-0.5',
+                                    expandedPR === pr.number && 'rotate-180'
+                                )} />
+                            </button>
 
-                            {/* External link icon */}
-                            <ExternalLink className="h-4 w-4 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity shrink-0 mt-0.5" />
-                        </a>
+                            {/* Expanded detail */}
+                            {expandedPR === pr.number && (
+                                <div className="border-t border-border">
+                                    <PRDetailPanel owner={owner} repo={repo} number={pr.number} />
+                                </div>
+                            )}
+                        </div>
                     ))}
                 </div>
             )}
@@ -413,7 +490,17 @@ function PRList({ owner, repo }: { owner: string; repo: string }) {
 // ============ Main Page ============
 export default function GitHubPage() {
     const { t } = useTranslation();
-    const [selectedRepo, setSelectedRepo] = useState('');
+    const [selectedRepo, setSelectedRepo] = useState(() => {
+        if (typeof window !== 'undefined') {
+            return localStorage.getItem('vs_github_repo') || '';
+        }
+        return '';
+    });
+
+    const handleRepoSelect = (repo: string) => {
+        setSelectedRepo(repo);
+        localStorage.setItem('vs_github_repo', repo);
+    };
 
     const [owner, repo] = selectedRepo ? selectedRepo.split('/') : ['', ''];
 
@@ -439,7 +526,7 @@ export default function GitHubPage() {
                 <TokenSection />
 
                 {/* Repo Selector */}
-                <RepoSelector selectedRepo={selectedRepo} onSelect={setSelectedRepo} />
+                <RepoSelector selectedRepo={selectedRepo} onSelect={handleRepoSelect} />
 
                 {/* PR List */}
                 {owner && repo && (

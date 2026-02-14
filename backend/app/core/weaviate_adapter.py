@@ -438,8 +438,29 @@ def register_golden(client: weaviate.WeaviateClient,
 
     golden_collection_name = _settings.GOLDEN_COLLECTION_NAME
     if not client.collections.exists(golden_collection_name):
-        # Collection will be auto-created by Weaviate or should be pre-created
-        logger.warning(f"Collection {golden_collection_name} does not exist, attempting insert anyway")
+        from weaviate.classes.config import Property, DataType, Configure
+        client.collections.create(
+            name=golden_collection_name,
+            properties=[
+                Property(name="function_name", data_type=DataType.TEXT),
+                Property(name="original_uuid", data_type=DataType.TEXT),
+                Property(name="note", data_type=DataType.TEXT),
+                Property(name="tags", data_type=DataType.TEXT_ARRAY),
+                Property(name="registered_at", data_type=DataType.TEXT),
+                Property(name="status", data_type=DataType.TEXT),
+                Property(name="duration_ms", data_type=DataType.NUMBER),
+                Property(name="timestamp_utc", data_type=DataType.TEXT),
+                Property(name="span_id", data_type=DataType.TEXT),
+                Property(name="trace_id", data_type=DataType.TEXT),
+                Property(name="team", data_type=DataType.TEXT),
+                Property(name="error_code", data_type=DataType.TEXT),
+                Property(name="error_message", data_type=DataType.TEXT),
+                Property(name="input_preview", data_type=DataType.TEXT),
+                Property(name="output_preview", data_type=DataType.TEXT),
+            ],
+            vectorizer_config=Configure.Vectorizer.none(),
+        )
+        logger.info(f"Created collection {golden_collection_name}")
 
     golden_collection = client.collections.get(golden_collection_name)
 

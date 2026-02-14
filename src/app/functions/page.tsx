@@ -17,6 +17,12 @@ import {
   AlertTriangle,
   Zap,
   ExternalLink,
+  ChevronDown,
+  ChevronRight,
+  FolderOpen,
+  FileCode,
+  LayoutGrid,
+  GitBranch,
 } from 'lucide-react';
 import {
   useFunctions,
@@ -378,6 +384,220 @@ function FunctionCard({ func, onClick }: FunctionCardProps) {
   );
 }
 
+// ============ File Tree Types & Builder ============
+type ViewMode = 'grid' | 'tree';
+type SortBy = 'execution_count' | 'error_rate' | 'avg_duration_ms' | 'name';
+
+interface FileTreeNode {
+  name: string;
+  path: string;
+  children: FileTreeNode[];
+  functions: FunctionInfo[];
+  totalExecutions: number;
+  avgErrorRate: number;
+  functionCount: number;
+}
+
+function buildFileTree(functions: FunctionInfo[], sortBy: SortBy): FileTreeNode {
+  const root: FileTreeNode = {
+    name: '',
+    path: '',
+    children: [],
+    functions: [],
+    totalExecutions: 0,
+    avgErrorRate: 0,
+    functionCount: 0,
+  };
+
+  for (const func of functions) {
+    const filePath = func.file_path || func.module || 'unknown';
+    const segments = filePath.replace(/\\/g, '/').split('/').filter(Boolean);
+
+    let current = root;
+    for (let i = 0; i < segments.length; i++) {
+      const seg = segments[i];
+      const fullPath = segments.slice(0, i + 1).join('/');
+      let child = current.children.find((c) => c.name === seg);
+      if (!child) {
+        child = {
+          name: seg,
+          path: fullPath,
+          children: [],
+          functions: [],
+          totalExecutions: 0,
+          avgErrorRate: 0,
+          functionCount: 0,
+        };
+        current.children.push(child);
+      }
+      current = child;
+    }
+    current.functions.push(func);
+  }
+
+  // Aggregate stats bottom-up
+  function aggregate(node: FileTreeNode): void {
+    for (const child of node.children) {
+      aggregate(child);
+    }
+    const allFuncs = getAllFunctions(node);
+    node.functionCount = allFuncs.length;
+    node.totalExecutions = allFuncs.reduce((sum, f) => sum + (f.execution_count || 0), 0);
+    const errorRates = allFuncs.filter((f) => f.error_rate !== undefined);
+    node.avgErrorRate = errorRates.length > 0
+      ? errorRates.reduce((sum, f) => sum + (f.error_rate || 0), 0) / errorRates.length
+      : 0;
+  }
+
+  function getAllFunctions(node: FileTreeNode): FunctionInfo[] {
+    const result = [...node.functions];
+    for (const child of node.children) {
+      result.push(...getAllFunctions(child));
+    }
+    return result;
+  }
+
+  aggregate(root);
+
+  // Sort children at each level
+  function sortTree(node: FileTreeNode): void {
+    // Directories first, then files with functions
+    node.children.sort((a, b) => {
+      const aIsDir = a.children.length > 0;
+      const bIsDir = b.children.length > 0;
+      if (aIsDir !== bIsDir) return aIsDir ? -1 : 1;
+
+      switch (sortBy) {
+        case 'execution_count': return b.totalExecutions - a.totalExecutions;
+        case 'error_rate': return b.avgErrorRate - a.avgErrorRate;
+        case 'avg_duration_ms': {
+          const aFuncs = getAllFunctions(a);
+          const bFuncs = getAllFunctions(b);
+          const aAvg = aFuncs.length > 0 ? aFuncs.reduce((s, f) => s + (f.avg_duration_ms || 0), 0) / aFuncs.length : 0;
+          const bAvg = bFuncs.length > 0 ? bFuncs.reduce((s, f) => s + (f.avg_duration_ms || 0), 0) / bFuncs.length : 0;
+          return bAvg - aAvg;
+        }
+        default: return a.name.localeCompare(b.name);
+      }
+    });
+
+    // Sort functions within node
+    node.functions.sort((a, b) => {
+      switch (sortBy) {
+        case 'execution_count': return (b.execution_count || 0) - (a.execution_count || 0);
+        case 'error_rate': return (b.error_rate || 0) - (a.error_rate || 0);
+        case 'avg_duration_ms': return (b.avg_duration_ms || 0) - (a.avg_duration_ms || 0);
+        default: return a.function_name.localeCompare(b.function_name);
+      }
+    });
+
+    for (const child of node.children) {
+      sortTree(child);
+    }
+  }
+
+  sortTree(root);
+  return root;
+}
+
+// ============ File Tree Node Component ============
+interface FileTreeNodeProps {
+  node: FileTreeNode;
+  depth?: number;
+  onSelectFunction: (func: FunctionInfo) => void;
+}
+
+function FileTreeNodeComponent({ node, depth = 0, onSelectFunction }: FileTreeNodeProps) {
+  const [expanded, setExpanded] = useState(depth < 2);
+  const { t } = useTranslation();
+  const hasChildren = node.children.length > 0 || node.functions.length > 0;
+  const isLeaf = node.children.length === 0;
+
+  return (
+    <div>
+      {/* Node header (skip root node which has empty name) */}
+      {node.name && (
+        <button
+          onClick={() => setExpanded(!expanded)}
+          className={cn(
+            'w-full flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-muted/50 transition-colors text-left',
+            depth > 0 && 'ml-4'
+          )}
+          style={{ paddingLeft: `${depth * 16 + 12}px` }}
+        >
+          {hasChildren ? (
+            expanded ? <ChevronDown className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
+              : <ChevronRight className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
+          ) : (
+            <div className="w-3.5" />
+          )}
+
+          {isLeaf && node.functions.length > 0 ? (
+            <FileCode className="h-3.5 w-3.5 text-primary shrink-0" />
+          ) : (
+            <FolderOpen className="h-3.5 w-3.5 text-yellow-500 shrink-0" />
+          )}
+
+          <span className="text-sm font-medium truncate">{node.name}</span>
+
+          <span className="ml-auto flex items-center gap-3 text-xs text-muted-foreground shrink-0">
+            <span>{node.functionCount} {t('functions.functionsCount')}</span>
+            {node.totalExecutions > 0 && (
+              <span>{formatNumber(node.totalExecutions)} {t('functions.runs')}</span>
+            )}
+            {node.avgErrorRate > 0 && (
+              <span className={node.avgErrorRate > 5 ? 'text-red-500' : ''}>
+                {formatPercentage(node.avgErrorRate)}
+              </span>
+            )}
+          </span>
+        </button>
+      )}
+
+      {/* Children */}
+      {(expanded || !node.name) && (
+        <div>
+          {node.children.map((child) => (
+            <FileTreeNodeComponent
+              key={child.path}
+              node={child}
+              depth={node.name ? depth + 1 : 0}
+              onSelectFunction={onSelectFunction}
+            />
+          ))}
+
+          {/* Functions in this node */}
+          {node.functions.map((func, i) => (
+            <button
+              key={`${func.function_name}-${i}`}
+              onClick={() => onSelectFunction(func)}
+              className="w-full flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-muted/50 transition-colors text-left"
+              style={{ paddingLeft: `${(node.name ? depth + 1 : 0) * 16 + 12 + 14}px` }}
+            >
+              <Code2 className="h-3.5 w-3.5 text-primary shrink-0" />
+              <code className="text-sm font-medium truncate">{func.function_name}</code>
+
+              <span className="ml-auto flex items-center gap-3 text-xs text-muted-foreground shrink-0">
+                {func.execution_count !== undefined && (
+                  <span>{formatNumber(func.execution_count)} {t('functions.runs')}</span>
+                )}
+                {func.avg_duration_ms !== undefined && (
+                  <span>{formatDuration(func.avg_duration_ms)}</span>
+                )}
+                {func.error_rate !== undefined && func.error_rate > 0 && (
+                  <span className={func.error_rate > 5 ? 'text-red-500' : ''}>
+                    {formatPercentage(func.error_rate)}
+                  </span>
+                )}
+              </span>
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 // ============ Main Page Component ============
 export default function FunctionsPage() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -385,6 +605,8 @@ export default function FunctionsPage() {
   const [alpha, setAlpha] = useState(0.5);
   const [teamFilter, setTeamFilter] = useState('');
   const [selectedFunction, setSelectedFunction] = useState<FunctionInfo | null>(null);
+  const [viewMode, setViewMode] = useState<ViewMode>('tree');
+  const [sortBy, setSortBy] = useState<SortBy>('execution_count');
   const { t } = useTranslation();
 
   // Fetch data based on search mode
@@ -418,8 +640,27 @@ export default function FunctionsPage() {
       );
     }
 
+    // Apply sort (for grid view; tree view handles sorting internally)
+    if (viewMode === 'grid') {
+      results = [...results].sort((a, b) => {
+        switch (sortBy) {
+          case 'execution_count': return (b.execution_count || 0) - (a.execution_count || 0);
+          case 'error_rate': return (b.error_rate || 0) - (a.error_rate || 0);
+          case 'avg_duration_ms': return (b.avg_duration_ms || 0) - (a.avg_duration_ms || 0);
+          case 'name': return a.function_name.localeCompare(b.function_name);
+          default: return 0;
+        }
+      });
+    }
+
     return results;
-  }, [searchQuery, searchMode, semanticResults, hybridResults, allFunctions, teamFilter]);
+  }, [searchQuery, searchMode, semanticResults, hybridResults, allFunctions, teamFilter, viewMode, sortBy]);
+
+  // Build file tree for tree view
+  const fileTree = useMemo(() => {
+    if (viewMode !== 'tree') return null;
+    return buildFileTree(functions, sortBy);
+  }, [functions, viewMode, sortBy]);
 
   const isLoading = searchQuery
     ? (searchMode === 'semantic' ? loadingSemantic : loadingHybrid)
@@ -506,14 +747,55 @@ export default function FunctionsPage() {
         )}
       </div>
 
-      {/* Results Count */}
-      <div className="flex items-center justify-between">
+      {/* Results Count + View Mode + Sort */}
+      <div className="flex items-center justify-between flex-wrap gap-3">
         <span className="text-sm text-muted-foreground">
           {functions.length} {t('nav.functions').toLowerCase()}
         </span>
+
+        <div className="flex items-center gap-3">
+          {/* Sort */}
+          <div className="flex items-center gap-1.5">
+            <span className="text-xs text-muted-foreground">{t('functions.sortBy')}:</span>
+            <select
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value as SortBy)}
+              className="rounded-lg border border-border bg-card px-2 py-1 text-xs focus:border-primary focus:outline-none"
+            >
+              <option value="execution_count">{t('functions.execCount')}</option>
+              <option value="error_rate">{t('functions.errorRate')}</option>
+              <option value="avg_duration_ms">{t('functions.avgDuration')}</option>
+              <option value="name">{t('functions.name')}</option>
+            </select>
+          </div>
+
+          {/* View Mode Toggle */}
+          <div className="flex items-center gap-1 rounded-lg bg-muted p-0.5">
+            <button
+              onClick={() => setViewMode('grid')}
+              className={cn(
+                'p-1.5 rounded-md transition-colors',
+                viewMode === 'grid' ? 'bg-background text-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground'
+              )}
+              title={t('functions.gridView')}
+            >
+              <LayoutGrid className="h-3.5 w-3.5" />
+            </button>
+            <button
+              onClick={() => setViewMode('tree')}
+              className={cn(
+                'p-1.5 rounded-md transition-colors',
+                viewMode === 'tree' ? 'bg-background text-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground'
+              )}
+              title={t('functions.treeView')}
+            >
+              <GitBranch className="h-3.5 w-3.5" />
+            </button>
+          </div>
+        </div>
       </div>
 
-      {/* Functions Grid */}
+      {/* Functions Grid / Tree */}
       {isLoading ? (
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {Array.from({ length: 6 }).map((_, i) => (
@@ -527,6 +809,13 @@ export default function FunctionsPage() {
           {searchQuery && (
             <p className="text-sm mt-1">{t('functions.tryDifferent')}</p>
           )}
+        </div>
+      ) : viewMode === 'tree' && fileTree ? (
+        <div className="rounded-2xl border border-border bg-card overflow-hidden">
+          <FileTreeNodeComponent
+            node={fileTree}
+            onSelectFunction={(func) => setSelectedFunction(func)}
+          />
         </div>
       ) : (
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">

@@ -112,6 +112,7 @@ export interface TraceAnalysis {
 export interface FunctionInfo {
   function_name: string;
   module: string;
+  file_path?: string;
   team?: string;
   description?: string;
   docstring?: string;

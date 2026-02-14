@@ -161,7 +161,13 @@
         "docstring": "Docstring",
         "sourceCode": "Source Code",
         "viewExecutions": "View Executions",
-        "viewErrors": "View Errors"
+        "viewErrors": "View Errors",
+        "gridView": "Grid",
+        "treeView": "Tree",
+        "sortBy": "Sort by",
+        "execCount": "Executions",
+        "name": "Name",
+        "functionsCount": "functions"
     },
     "errors": {
         "title": "Errors",
@@ -310,7 +316,11 @@
         "simulate": "Simulate",
         "isDrift": "Drift Detected",
         "noDrift": "No Drift",
-        "viewExecutions": "Browse executions to register"
+        "viewExecutions": "Browse executions to register",
+        "analyticsTab": "Analytics",
+        "goldenTab": "Golden Dataset",
+        "driftTab": "Drift Detection",
+        "noExecutionData": "No execution data yet"
     },
     "healer": {
         "title": "Healer",
@@ -374,6 +384,11 @@
         "merged": "Merged",
         "draft": "Draft",
         "all": "All",
-        "by": "by"
+        "by": "by",
+        "changedFiles": "Changed files",
+        "additions": "Additions",
+        "deletions": "Deletions",
+        "noBody": "No description",
+        "loading": "Loading..."
     }
 }

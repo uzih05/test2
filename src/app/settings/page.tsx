@@ -265,8 +265,8 @@ function ConnectionManager() {
     try {
       await connectionsService.updateApiKey(connectionId, connApiKey.trim());
       setConnApiKey('');
-      setKeyEditingId(null);
-      setKeyMessage(null);
+      setKeyMessage({ type: 'success', text: t('settings.apiKeySaved') });
+      setTimeout(() => { setKeyMessage(null); setKeyEditingId(null); }, 3000);
       await fetchConnections();
       await checkAuth();
     } catch (e: any) {
@@ -281,8 +281,8 @@ function ConnectionManager() {
     setKeyMessage(null);
     try {
       await connectionsService.deleteApiKey(connectionId);
-      setKeyEditingId(null);
-      setKeyMessage(null);
+      setKeyMessage({ type: 'success', text: t('settings.apiKeyDeleted') });
+      setTimeout(() => { setKeyMessage(null); setKeyEditingId(null); }, 3000);
       await fetchConnections();
       await checkAuth();
     } catch (e: any) {

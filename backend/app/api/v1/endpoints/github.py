@@ -204,7 +204,45 @@ async def list_pulls(
                     rv["login"] for rv in pr.get("requested_reviewers", [])
                 ],
                 "html_url": pr["html_url"],
+                "body": (pr.get("body") or "")[:300],
             }
             for pr in pulls
         ]
+    }
+
+
+@router.get("/repos/{owner}/{repo}/pulls/{number}")
+async def get_pull_detail(
+    owner: str,
+    repo: str,
+    number: int,
+    user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+):
+    """Get detailed info for a single pull request."""
+    token = await _get_token(user, db)
+    pr = await _github_get(token, f"/repos/{owner}/{repo}/pulls/{number}")
+
+    return {
+        "number": pr["number"],
+        "title": pr["title"],
+        "body": pr.get("body") or "",
+        "state": "merged" if pr.get("merged_at") else pr["state"],
+        "draft": pr.get("draft", False),
+        "author": pr["user"]["login"],
+        "author_avatar": pr["user"]["avatar_url"],
+        "created_at": pr["created_at"],
+        "updated_at": pr["updated_at"],
+        "merged_at": pr.get("merged_at"),
+        "changed_files": pr.get("changed_files", 0),
+        "additions": pr.get("additions", 0),
+        "deletions": pr.get("deletions", 0),
+        "labels": [
+            {"name": lb["name"], "color": lb.get("color", "888888")}
+            for lb in pr.get("labels", [])
+        ],
+        "reviewers": [
+            rv["login"] for rv in pr.get("requested_reviewers", [])
+        ],
+        "html_url": pr["html_url"],
     }

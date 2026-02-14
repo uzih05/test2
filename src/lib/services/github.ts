@@ -43,6 +43,13 @@ export interface GitHubPR {
   labels: { name: string; color: string }[];
   reviewers: string[];
   html_url: string;
+  body?: string;
+}
+
+export interface GitHubPRDetail extends GitHubPR {
+  changed_files: number;
+  additions: number;
+  deletions: number;
 }
 
 export const githubService = {
@@ -85,6 +92,18 @@ export const githubService = {
   ): Promise<{ items: GitHubPR[] }> {
     const res = await fetch(
       `${API_BASE}/github/repos/${owner}/${repo}/pulls?state=${state}&page=${page}&per_page=30`,
+      { headers: getAuthHeaders() },
+    );
+    return handleResponse(res);
+  },
+
+  async getPullDetail(
+    owner: string,
+    repo: string,
+    number: number,
+  ): Promise<GitHubPRDetail> {
+    const res = await fetch(
+      `${API_BASE}/github/repos/${owner}/${repo}/pulls/${number}`,
       { headers: getAuthHeaders() },
     );
     return handleResponse(res);

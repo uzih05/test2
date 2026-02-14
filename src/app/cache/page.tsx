@@ -65,6 +65,18 @@ function CacheAnalyticsSection() {
     );
   }
 
+  if (data?.total_executions === 0) {
+    return (
+      <div>
+        <h2 className="text-lg font-semibold mb-4">{t('cache.analytics')}</h2>
+        <div className="rounded-xl border border-border bg-card p-8 text-center text-sm text-muted-foreground">
+          <Database className="h-8 w-8 mx-auto mb-2 opacity-50" />
+          {t('cache.noExecutionData')}
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div>
       <h2 className="text-lg font-semibold mb-4">{t('cache.analytics')}</h2>
@@ -484,29 +496,61 @@ function DriftDetectionSection() {
   );
 }
 
+// ============ Tab Navigation ============
+type CacheTab = 'analytics' | 'golden' | 'drift';
+
+function CacheTabSelector({ value, onChange }: { value: CacheTab; onChange: (tab: CacheTab) => void }) {
+  const { t } = useTranslation();
+
+  const tabs: { key: CacheTab; label: string }[] = [
+    { key: 'analytics', label: t('cache.analyticsTab') },
+    { key: 'golden', label: t('cache.goldenTab') },
+    { key: 'drift', label: t('cache.driftTab') },
+  ];
+
+  return (
+    <div className="flex items-center gap-1 rounded-xl bg-muted p-1">
+      {tabs.map((tab) => (
+        <button
+          key={tab.key}
+          onClick={() => onChange(tab.key)}
+          className={cn(
+            'px-4 py-1.5 text-sm font-medium rounded-lg transition-colors',
+            value === tab.key
+              ? 'bg-background text-foreground shadow-sm'
+              : 'text-muted-foreground hover:text-foreground'
+          )}
+        >
+          {tab.label}
+        </button>
+      ))}
+    </div>
+  );
+}
+
 // ============ Main Page ============
 export default function CachePage() {
   const { t } = useTranslation();
+  const [activeTab, setActiveTab] = useState<CacheTab>('analytics');
 
   return (
     <div className="space-y-6 p-6">
       {/* Header */}
-      <div>
-        <h1 className="text-2xl font-bold tracking-tight flex items-center gap-2">
-          <Database className="h-6 w-6 text-primary" />
-          {t('cache.title')}
-        </h1>
-        <p className="text-muted-foreground">{t('cache.subtitle')}</p>
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight flex items-center gap-2">
+            <Database className="h-6 w-6 text-primary" />
+            {t('cache.title')}
+          </h1>
+          <p className="text-muted-foreground">{t('cache.subtitle')}</p>
+        </div>
+        <CacheTabSelector value={activeTab} onChange={setActiveTab} />
       </div>
 
-      {/* Cache Analytics KPI */}
-      <CacheAnalyticsSection />
-
-      {/* Golden Dataset + Drift Detection */}
-      <div className="grid gap-6 lg:grid-cols-2">
-        <GoldenDatasetSection />
-        <DriftDetectionSection />
-      </div>
+      {/* Tab Content */}
+      {activeTab === 'analytics' && <CacheAnalyticsSection />}
+      {activeTab === 'golden' && <GoldenDatasetSection />}
+      {activeTab === 'drift' && <DriftDetectionSection />}
     </div>
   );
 }

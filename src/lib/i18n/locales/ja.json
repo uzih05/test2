@@ -161,7 +161,13 @@
         "docstring": "ドキュメント",
         "sourceCode": "ソースコード",
         "viewExecutions": "実行を見る",
-        "viewErrors": "エラーを見る"
+        "viewErrors": "エラーを見る",
+        "gridView": "グリッド",
+        "treeView": "ツリー",
+        "sortBy": "ソート",
+        "execCount": "実行数",
+        "name": "名前",
+        "functionsCount": "関数"
     },
     "errors": {
         "title": "エラー",
@@ -310,7 +316,11 @@
         "simulate": "シミュレーション",
         "isDrift": "ドリフト検出",
         "noDrift": "ドリフトなし",
-        "viewExecutions": "実行一覧から登録する"
+        "viewExecutions": "実行一覧から登録する",
+        "analyticsTab": "分析",
+        "goldenTab": "ゴールデンデータセット",
+        "driftTab": "ドリフト検出",
+        "noExecutionData": "実行データがまだありません"
     },
     "healer": {
         "title": "ヒーラー",
@@ -374,6 +384,11 @@
         "merged": "マージ済み",
         "draft": "ドラフト",
         "all": "全て",
-        "by": "作成者"
+        "by": "作成者",
+        "changedFiles": "変更ファイル",
+        "additions": "追加",
+        "deletions": "削除",
+        "noBody": "説明なし",
+        "loading": "読込中..."
     }
 }

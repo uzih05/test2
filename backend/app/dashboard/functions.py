@@ -26,6 +26,7 @@ def _normalize_function(props: Dict[str, Any], extra: Optional[Dict] = None) -> 
     result = {
         "function_name": props.get("function_name"),
         "module": props.get("module_name") or props.get("module"),
+        "file_path": props.get("file_path"),
         "description": props.get("search_description") or props.get("description"),
         "docstring": props.get("docstring"),
         "source_code": props.get("source_code"),

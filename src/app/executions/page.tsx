@@ -161,7 +161,7 @@ function ExecutionDetailModal({ spanId, onClose }: ExecutionDetailModalProps) {
 
 // ============ Slowest Executions Section ============
 function SlowestExecutionsSection() {
-    const { data: slowest, isLoading } = useSlowestExecutions(5);
+    const { data: slowest, isLoading } = useSlowestExecutions(30);
     const [selectedSpan, setSelectedSpan] = useState<string | null>(null);
     const { t } = useTranslation();
 
